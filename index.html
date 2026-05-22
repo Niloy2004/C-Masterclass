@@ -1,0 +1,1750 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>C Masterclass — Complete Course</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0a0b0e;
+  --bg2: #111318;
+  --bg3: #181b22;
+  --bg4: #1e2230;
+  --border: #2a2f3e;
+  --border2: #363d52;
+  --accent: #00d4aa;
+  --accent2: #0099ff;
+  --accent3: #ff6b35;
+  --text: #e8ecf4;
+  --text2: #8b95ae;
+  --text3: #555f7a;
+  --green: #00d4aa;
+  --blue: #0099ff;
+  --orange: #ff6b35;
+  --yellow: #ffd166;
+  --red: #ff4d6d;
+  --purple: #b69fff;
+  --sidebar-w: 280px;
+  --header-h: 56px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:'Syne',sans-serif;min-height:100vh;overflow-x:hidden}
+::-webkit-scrollbar{width:4px}
+::-webkit-scrollbar-track{background:var(--bg2)}
+::-webkit-scrollbar-thumb{background:var(--border2);border-radius:2px}
+
+/* HEADER */
+.header{position:fixed;top:0;left:0;right:0;height:var(--header-h);background:rgba(10,11,14,0.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 1.5rem;z-index:100;gap:1rem}
+.logo{font-size:20px;font-weight:800;letter-spacing:-0.5px}
+.logo span{color:var(--accent)}
+.header-sub{font-size:12px;color:var(--text3);font-family:'JetBrains Mono',monospace;padding:2px 8px;background:var(--bg3);border:1px solid var(--border);border-radius:4px}
+.header-right{margin-left:auto;display:flex;align-items:center;gap:12px}
+.progress-bar-wrap{width:120px;height:4px;background:var(--bg3);border-radius:2px}
+.progress-bar-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--blue));border-radius:2px;transition:width .5s ease;width:0%}
+.progress-text{font-size:11px;color:var(--text3);font-family:'JetBrains Mono',monospace}
+.menu-btn{display:none;background:none;border:1px solid var(--border);color:var(--text2);padding:6px 10px;border-radius:6px;cursor:pointer;font-size:16px}
+
+/* SIDEBAR */
+.sidebar{position:fixed;top:var(--header-h);left:0;width:var(--sidebar-w);height:calc(100vh - var(--header-h));overflow-y:auto;background:var(--bg2);border-right:1px solid var(--border);padding:1rem 0;transition:transform .3s ease;z-index:90}
+.sidebar-section{margin-bottom:.25rem}
+.sidebar-section-title{font-size:10px;font-weight:700;color:var(--text3);letter-spacing:1.5px;text-transform:uppercase;padding:.5rem 1.25rem .25rem;font-family:'JetBrains Mono',monospace}
+.sidebar-item{display:flex;align-items:center;gap:10px;padding:.5rem 1.25rem;cursor:pointer;font-size:13px;color:var(--text2);border-left:2px solid transparent;transition:all .15s;user-select:none}
+.sidebar-item:hover{color:var(--text);background:var(--bg3)}
+.sidebar-item.active{color:var(--accent);border-left-color:var(--accent);background:rgba(0,212,170,0.06)}
+.sidebar-item.done .dot{background:var(--green)!important}
+.dot{width:7px;height:7px;border-radius:50%;background:var(--border2);flex-shrink:0}
+.sidebar-item.active .dot{background:var(--accent)}
+.sidebar-num{font-size:10px;color:var(--text3);font-family:'JetBrains Mono',monospace;margin-left:auto;flex-shrink:0}
+
+/* MAIN */
+.main{margin-left:var(--sidebar-w);padding-top:var(--header-h)}
+.content{max-width:860px;padding:2.5rem 2.5rem 6rem;margin:0 auto}
+
+/* HERO */
+.hero{background:var(--bg2);border:1px solid var(--border);border-radius:16px;padding:2.5rem;margin-bottom:2rem;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;top:-80px;right:-80px;width:300px;height:300px;background:radial-gradient(circle,rgba(0,212,170,.08),transparent 70%);pointer-events:none}
+.hero-badge{display:inline-flex;align-items:center;gap:6px;font-size:11px;color:var(--accent);background:rgba(0,212,170,.1);border:1px solid rgba(0,212,170,.2);padding:4px 10px;border-radius:20px;margin-bottom:1rem;font-family:'JetBrains Mono',monospace}
+.hero h1{font-size:36px;font-weight:800;line-height:1.1;letter-spacing:-1px;margin-bottom:.75rem}
+.hero h1 span{color:var(--accent)}
+.hero p{color:var(--text2);font-size:15px;line-height:1.7;max-width:540px;margin-bottom:1.5rem}
+.hero-stats{display:flex;gap:2rem;flex-wrap:wrap}
+.stat{text-align:left}
+.stat-val{font-size:22px;font-weight:800;color:var(--text)}
+.stat-label{font-size:11px;color:var(--text3);font-family:'JetBrains Mono',monospace}
+
+/* CHAPTERS */
+.chapter{margin-bottom:4rem}
+.chapter-header{display:flex;align-items:center;gap:12px;margin-bottom:1.5rem;padding-bottom:1rem;border-bottom:1px solid var(--border)}
+.chapter-num{font-size:11px;color:var(--accent);font-family:'JetBrains Mono',monospace;background:rgba(0,212,170,.1);border:1px solid rgba(0,212,170,.2);padding:3px 8px;border-radius:4px}
+.chapter h2{font-size:24px;font-weight:700;letter-spacing:-0.5px}
+
+/* LESSON */
+.lesson{background:var(--bg2);border:1px solid var(--border);border-radius:12px;margin-bottom:1.25rem;overflow:hidden}
+.lesson-title{display:flex;align-items:center;gap:10px;padding:1rem 1.25rem;cursor:pointer;font-size:15px;font-weight:600;color:var(--text);user-select:none;transition:background .15s}
+.lesson-title:hover{background:var(--bg3)}
+.lesson-title .lt-icon{font-size:14px;margin-left:auto;color:var(--text3);transition:transform .3s}
+.lesson-title.open .lt-icon{transform:rotate(180deg)}
+.lesson-content{display:none;padding:0 1.25rem 1.5rem;border-top:1px solid var(--border)}
+.lesson-content.show{display:block}
+
+/* CONCEPT BOX */
+.concept{margin:1.25rem 0}
+.concept h3{font-size:14px;font-weight:700;color:var(--text);margin-bottom:.6rem;display:flex;align-items:center;gap:8px;font-family:'JetBrains Mono',monospace}
+.concept h3::before{content:'//';color:var(--text3)}
+.concept p{font-size:14px;color:var(--text2);line-height:1.8;margin-bottom:.75rem}
+.concept ul{list-style:none;padding:0}
+.concept ul li{font-size:13px;color:var(--text2);padding:.25rem 0 .25rem 1.25rem;position:relative;line-height:1.7}
+.concept ul li::before{content:'▶';color:var(--accent);font-size:8px;position:absolute;left:0;top:6px}
+
+/* CODE */
+pre{background:#0d0f14;border:1px solid var(--border);border-radius:10px;padding:1.25rem;overflow-x:auto;font-family:'JetBrains Mono',monospace;font-size:13px;line-height:1.8;margin:1rem 0;position:relative}
+pre .lang{position:absolute;top:8px;right:10px;font-size:10px;color:var(--text3);background:var(--bg3);padding:2px 8px;border-radius:4px;font-family:'JetBrains Mono',monospace}
+.kw{color:#ff79c6}
+.kw2{color:#8be9fd}
+.fn{color:#50fa7b}
+.str{color:#f1fa8c}
+.cm{color:#6272a4;font-style:italic}
+.nm{color:#bd93f9}
+.pp{color:#ff6b35}
+.op{color:#ffb86c}
+
+/* CALLOUTS */
+.tip,.warn,.info,.danger{border-radius:8px;padding:.85rem 1.1rem;margin:1rem 0;font-size:13px;line-height:1.7;border-left:3px solid}
+.tip{background:rgba(0,212,170,.06);border-color:var(--green);color:var(--text)}
+.tip strong,.warn strong,.info strong,.danger strong{display:block;font-size:11px;letter-spacing:.5px;text-transform:uppercase;margin-bottom:.3rem;font-family:'JetBrains Mono',monospace}
+.tip strong{color:var(--green)}
+.warn{background:rgba(255,107,53,.06);border-color:var(--orange);color:var(--text)}
+.warn strong{color:var(--orange)}
+.info{background:rgba(0,153,255,.06);border-color:var(--blue);color:var(--text)}
+.info strong{color:var(--blue)}
+.danger{background:rgba(255,77,109,.06);border-color:var(--red);color:var(--text)}
+.danger strong{color:var(--red)}
+
+/* TABLE */
+.tbl-wrap{overflow-x:auto;margin:1rem 0;border-radius:8px;border:1px solid var(--border)}
+table{width:100%;border-collapse:collapse;font-size:13px;font-family:'JetBrains Mono',monospace}
+th{background:var(--bg3);padding:.6rem .9rem;text-align:left;font-size:11px;color:var(--text2);letter-spacing:.5px;text-transform:uppercase;border-bottom:1px solid var(--border)}
+td{padding:.6rem .9rem;border-bottom:1px solid var(--border);color:var(--text);vertical-align:top}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:var(--bg3)}
+
+/* MARKS */
+code{background:var(--bg3);border:1px solid var(--border);color:var(--accent);padding:1px 6px;border-radius:4px;font-family:'JetBrains Mono',monospace;font-size:12px}
+
+/* DONE BUTTON */
+.mark-done{display:inline-flex;align-items:center;gap:8px;margin-top:1.25rem;padding:8px 16px;background:var(--bg3);border:1px solid var(--border);color:var(--text2);font-size:13px;border-radius:8px;cursor:pointer;font-family:'Syne',sans-serif;font-weight:600;transition:all .2s}
+.mark-done:hover{border-color:var(--accent);color:var(--accent);background:rgba(0,212,170,.06)}
+.mark-done.done{border-color:var(--green);color:var(--green);background:rgba(0,212,170,.08)}
+
+/* RESPONSIVE */
+@media(max-width:768px){
+  .sidebar{transform:translateX(-100%)}
+  .sidebar.open{transform:translateX(0)}
+  .main{margin-left:0}
+  .menu-btn{display:block}
+  .content{padding:1.5rem 1rem 5rem}
+  .hero h1{font-size:24px}
+  .hero-stats{gap:1.5rem}
+}
+
+/* OVERLAY */
+.overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:80}
+.overlay.show{display:block}
+
+/* CHAPTER NAV */
+.chap-nav{display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:1.5rem}
+.chap-btn{padding:6px 14px;font-size:12px;border-radius:20px;border:1px solid var(--border);background:var(--bg2);color:var(--text2);cursor:pointer;font-family:'JetBrains Mono',monospace;transition:all .15s}
+.chap-btn:hover{border-color:var(--border2);color:var(--text)}
+.chap-btn.active{background:var(--accent);border-color:var(--accent);color:#000;font-weight:700}
+
+/* QUIZ */
+.quiz{background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:1.25rem;margin:1.25rem 0}
+.quiz-q{font-size:14px;font-weight:600;margin-bottom:.75rem;color:var(--text)}
+.quiz-opts{display:flex;flex-direction:column;gap:.5rem}
+.quiz-opt{padding:.6rem 1rem;border:1px solid var(--border);border-radius:8px;cursor:pointer;font-size:13px;color:var(--text2);transition:all .15s;background:var(--bg2)}
+.quiz-opt:hover{border-color:var(--border2);color:var(--text)}
+.quiz-opt.correct{border-color:var(--green);background:rgba(0,212,170,.08);color:var(--green)}
+.quiz-opt.wrong{border-color:var(--red);background:rgba(255,77,109,.08);color:var(--red)}
+.quiz-result{font-size:13px;margin-top:.75rem;font-family:'JetBrains Mono',monospace;display:none}
+
+/* SCROLLSPY active */
+.section-anchor{display:block;position:relative;top:calc(-1 * var(--header-h) - 16px)}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="header">
+  <button class="menu-btn" onclick="toggleSidebar()">☰</button>
+  <div class="logo">C <span>Masterclass</span></div>
+  <div class="header-sub">v2.0 — Hindi + Code</div>
+  <div class="header-right">
+    <span class="progress-text" id="prog-text">0% complete</span>
+    <div class="progress-bar-wrap"><div class="progress-bar-fill" id="prog-bar"></div></div>
+  </div>
+</header>
+
+<div class="overlay" id="overlay" onclick="toggleSidebar()"></div>
+
+<!-- SIDEBAR -->
+<nav class="sidebar" id="sidebar">
+  <div class="sidebar-section">
+    <div class="sidebar-section-title">Getting Started</div>
+    <div class="sidebar-item active" onclick="jumpTo('hero')"><div class="dot"></div>Overview<span class="sidebar-num">00</span></div>
+  </div>
+
+  <div class="sidebar-section">
+    <div class="sidebar-section-title">Chapter 1 — Basics</div>
+    <div class="sidebar-item" onclick="jumpTo('ch1-intro')"><div class="dot"></div>Intro to C<span class="sidebar-num">01</span></div>
+    <div class="sidebar-item" onclick="jumpTo('ch1-struct')"><div class="dot"></div>Program Structure<span class="sidebar-num">02</span></div>
+    <div class="sidebar-item" onclick="jumpTo('ch1-io')"><div class="dot"></div>Input / Output<span class="sidebar-num">03</span></div>
+  </div>
+
+  <div class="sidebar-section">
+    <div class="sidebar-section-title">Chapter 2 — Data Types</div>
+    <div class="sidebar-item" onclick="jumpTo('ch2-types')"><div class="dot"></div>Data Types<span class="sidebar-num">04</span></div>
+    <div class="sidebar-item" onclick="jumpTo('ch2-vars')"><div class="dot"></div>Variables &amp; Constants<span class="sidebar-num">05</span></div>
+    <div class="sidebar-item" onclick="jumpTo('ch2-format')"><div class="dot"></div>Format Specifiers<span class="sidebar-num">06</span></div>
+  </div>
+
+  <div class="sidebar-section">
+    <div class="sidebar-section-title">Chapter 3 — Operators</div>
+    <div class="sidebar-item" onclick="jumpTo('ch3-arith')"><div class="dot"></div>Arithmetic<span class="sidebar-num">07</span></div>
+    <div class="sidebar-item" onclick="jumpTo('ch3-rel')"><div class="dot"></div>Relational &amp; Logical<span class="sidebar-num">08</span></div>
+    <div class="sidebar-item" onclick="jumpTo('ch3-bit')"><div class="dot"></div>Bitwise &amp; Special<span class="sidebar-num">09</span></div>
+  </div>
+
+  <div class="sidebar-section">
+    <div class="sidebar-section-title">Chapter 4 — Control Flow</div>
+    <div class="sidebar-item" onclick="jumpTo('ch4-if')"><div class="dot"></div>if / else / switch<span class="sidebar-num">10</span></div>
+    <div class="sidebar-item" onclick="jumpTo('ch4-loops')"><div class="dot"></div>Loops — for/while<span class="sidebar-num">11</span></div>
+    <div class="sidebar-item" onclick="jumpTo('ch4-break')"><div class="dot"></div>break / continue / goto<span class="sidebar-num">12</span></div>
+  </div>
+
+  <div class="sidebar-section">
+    <div class="sidebar-section-title">Chapter 5 — Functions</div>
+    <div class="sidebar-item" onclick="jumpTo('ch5-func')"><div class="dot"></div>Functions Deep Dive<span class="sidebar-num">13</span></div>
+    <div class="sidebar-item" onclick="jumpTo('ch5-scope')"><div class="dot"></div>Scope &amp; Storage Class<span class="sidebar-num">14</span></div>
+    <div class="sidebar-item" onclick="jumpTo('ch5-rec')"><div class="dot"></div>Recursion<span class="sidebar-num">15</span></div>
+  </div>
+
+  <div class="sidebar-section">
+    <div class="sidebar-section-title">Chapter 6 — Arrays</div>
+    <div class="sidebar-item" onclick="jumpTo('ch6-1d')"><div class="dot"></div>1D Arrays<span class="sidebar-num">16</span></div>
+    <div class="sidebar-item" onclick="jumpTo('ch6-2d')"><div class="dot"></div>2D Arrays / Matrix<span class="sidebar-num">17</span></div>
+    <div class="sidebar-item" onclick="jumpTo('ch6-arr-fn')"><div class="dot"></div>Arrays in Functions<span class="sidebar-num">18</span></div>
+  </div>
+
+  <div class="sidebar-section">
+    <div class="sidebar-section-title">Chapter 7 — Strings</div>
+    <div class="sidebar-item" onclick="jumpTo('ch7-str')"><div class="dot"></div>Strings Basics<span class="sidebar-num">19</span></div>
+    <div class="sidebar-item" onclick="jumpTo('ch7-lib')"><div class="dot"></div>String Library<span class="sidebar-num">20</span></div>
+  </div>
+
+  <div class="sidebar-section">
+    <div class="sidebar-section-title">Chapter 8 — Pointers</div>
+    <div class="sidebar-item" onclick="jumpTo('ch8-ptr')"><div class="dot"></div>Pointers Basics<span class="sidebar-num">21</span></div>
+    <div class="sidebar-item" onclick="jumpTo('ch8-ptr-arr')"><div class="dot"></div>Pointers &amp; Arrays<span class="sidebar-num">22</span></div>
+    <div class="sidebar-item" onclick="jumpTo('ch8-ptr-fn')"><div class="dot"></div>Pointers &amp; Functions<span class="sidebar-num">23</span></div>
+    <div class="sidebar-item" onclick="jumpTo('ch8-dbl')"><div class="dot"></div>Double Pointers<span class="sidebar-num">24</span></div>
+  </div>
+
+  <div class="sidebar-section">
+    <div class="sidebar-section-title">Chapter 9 — Struct &amp; Union</div>
+    <div class="sidebar-item" onclick="jumpTo('ch9-struct')"><div class="dot"></div>Structures<span class="sidebar-num">25</span></div>
+    <div class="sidebar-item" onclick="jumpTo('ch9-union')"><div class="dot"></div>Union &amp; Enum<span class="sidebar-num">26</span></div>
+  </div>
+
+  <div class="sidebar-section">
+    <div class="sidebar-section-title">Chapter 10 — Memory</div>
+    <div class="sidebar-item" onclick="jumpTo('ch10-mem')"><div class="dot"></div>Dynamic Memory<span class="sidebar-num">27</span></div>
+    <div class="sidebar-item" onclick="jumpTo('ch10-stack')"><div class="dot"></div>Stack vs Heap<span class="sidebar-num">28</span></div>
+  </div>
+
+  <div class="sidebar-section">
+    <div class="sidebar-section-title">Chapter 11 — File I/O</div>
+    <div class="sidebar-item" onclick="jumpTo('ch11-file')"><div class="dot"></div>File Handling<span class="sidebar-num">29</span></div>
+  </div>
+
+  <div class="sidebar-section">
+    <div class="sidebar-section-title">Chapter 12 — Advanced</div>
+    <div class="sidebar-item" onclick="jumpTo('ch12-pre')"><div class="dot"></div>Preprocessor<span class="sidebar-num">30</span></div>
+    <div class="sidebar-item" onclick="jumpTo('ch12-typedef')"><div class="dot"></div>typedef &amp; Bit Fields<span class="sidebar-num">31</span></div>
+  </div>
+</nav>
+
+<!-- MAIN CONTENT -->
+<main class="main">
+<div class="content">
+
+<!-- HERO -->
+<a class="section-anchor" id="hero"></a>
+<div class="hero">
+  <div class="hero-badge">★ Complete Course • Beginner to Advanced</div>
+  <h1>Master the <span>C Language</span><br>From Zero to Hero</h1>
+  <p>Hindi mein samjho, code mein likho. Yeh course aapko C programming ke har ek concept ko deeply samjhata hai — basics se lekar dynamic memory aur file handling tak.</p>
+  <div class="hero-stats">
+    <div class="stat"><div class="stat-val">12</div><div class="stat-label">Chapters</div></div>
+    <div class="stat"><div class="stat-val">31</div><div class="stat-label">Lessons</div></div>
+    <div class="stat"><div class="stat-val">100+</div><div class="stat-label">Code Examples</div></div>
+    <div class="stat"><div class="stat-val">Free</div><div class="stat-label">Forever</div></div>
+  </div>
+</div>
+
+<!-- ====== CHAPTER 1 ====== -->
+<div class="chapter" id="ch1">
+  <div class="chapter-header">
+    <span class="chapter-num">CHAPTER 01</span>
+    <h2>C Language — Introduction & Basics</h2>
+  </div>
+
+  <!-- Lesson 1 -->
+  <a class="section-anchor" id="ch1-intro"></a>
+  <div class="lesson" id="l1">
+    <div class="lesson-title" onclick="toggleLesson('l1')">
+      <span style="color:var(--accent);font-family:'JetBrains Mono',monospace;font-size:12px">01</span>
+      &nbsp;C Language Kya Hai? — History & Features
+      <span class="lt-icon">▾</span>
+    </div>
+    <div class="lesson-content">
+      <div class="concept">
+        <h3>C Language ka Janam</h3>
+        <p>C ek <strong style="color:var(--accent)">general-purpose, procedural, compiled programming language</strong> hai. Isko <strong style="color:var(--yellow)">Dennis Ritchie</strong> ne 1972 mein Bell Labs mein banaya — sirf UNIX operating system likhne ke liye!</p>
+        <p>Aaj bhi C duniya ki sabse important languages mein se ek hai. Linux kernel, MySQL, Python interpreter — sab C mein likhe hain.</p>
+      </div>
+      <div class="concept">
+        <h3>C Ki Features — Kyun Seekhein?</h3>
+        <ul>
+          <li><strong style="color:var(--accent)">Fast &amp; Efficient</strong> — Machine ke bahut kareeb hai, bahut speed milti hai</li>
+          <li><strong style="color:var(--accent)">Portable</strong> — Ek baar likho, kahin bhi chalao</li>
+          <li><strong style="color:var(--accent)">Low-level Access</strong> — Memory directly manipulate kar sakte ho</li>
+          <li><strong style="color:var(--accent)">Mother Language</strong> — C++, Java, Python sab issi se inspired hain</li>
+          <li><strong style="color:var(--accent)">Structured</strong> — Functions aur modules se code organize hota hai</li>
+          <li><strong style="color:var(--accent)">Rich Library</strong> — Bahut saare built-in functions available hain</li>
+        </ul>
+      </div>
+      <div class="concept">
+        <h3>Compiled vs Interpreted</h3>
+        <p>C ek <strong style="color:var(--blue)">compiled language</strong> hai. Matlab aapka source code (.c file) pehle compiler (GCC/Clang) se <strong>machine code</strong> (.exe ya .out) mein convert hota hai, phir chalta hai.</p>
+      </div>
+      <div class="info"><strong>💡 Yaad Rakho</strong>C ka development kuch is tarah hua: BCPL → B → C. C ko eventually C++ ne extend kiya.</div>
+      <button class="mark-done" onclick="markDone(this,'l1')">✓ Mark as Done</button>
+    </div>
+  </div>
+
+  <!-- Lesson 2 -->
+  <a class="section-anchor" id="ch1-struct"></a>
+  <div class="lesson" id="l2">
+    <div class="lesson-title" onclick="toggleLesson('l2')">
+      <span style="color:var(--accent);font-family:'JetBrains Mono',monospace;font-size:12px">02</span>
+      &nbsp;C Program Ka Structure — Har Part Samjho
+      <span class="lt-icon">▾</span>
+    </div>
+    <div class="lesson-content">
+      <div class="concept">
+        <h3>Pehla Program — Hello World</h3>
+<pre><span class="lang">C</span><span class="cm">/* Yeh ek comment hai — compiler ignore karta hai */</span>
+<span class="pp">#include</span> <span class="str">&lt;stdio.h&gt;</span>    <span class="cm">// Header file — printf ka ghar</span>
+
+<span class="kw2">int</span> <span class="fn">main</span>() {          <span class="cm">// Program yahan se start hota hai</span>
+    <span class="fn">printf</span>(<span class="str">"Hello, World!\n"</span>);  <span class="cm">// Output print karo</span>
+    <span class="kw">return</span> <span class="nm">0</span>;          <span class="cm">// 0 = success</span>
+}</pre>
+      </div>
+      <div class="concept">
+        <h3>Har Part Ka Kaam</h3>
+        <div class="tbl-wrap">
+        <table>
+          <tr><th>Part</th><th>Kya hai</th><th>Zaroor hai?</th></tr>
+          <tr><td><code>#include &lt;stdio.h&gt;</code></td><td>Standard I/O library include karta hai. printf, scanf iske bina kaam nahi karte</td><td>✅ Yes (agar printf use ho)</td></tr>
+          <tr><td><code>int main()</code></td><td>Program ka entry point. OS yahan se execution shuru karta hai</td><td>✅ Always</td></tr>
+          <tr><td><code>{ }</code></td><td>Curly braces — ek block define karte hain</td><td>✅ Always</td></tr>
+          <tr><td><code>printf()</code></td><td>Screen pe print karta hai</td><td>❌ Optional</td></tr>
+          <tr><td><code>return 0;</code></td><td>OS ko batata hai — program sahi se chala. 0 = success, non-zero = error</td><td>✅ Best practice</td></tr>
+          <tr><td><code>;</code> (semicolon)</td><td>Har statement ka end. Yeh bhool gaye toh compile error!</td><td>✅ Every statement</td></tr>
+        </table>
+        </div>
+      </div>
+      <div class="concept">
+        <h3>Common Header Files</h3>
+        <div class="tbl-wrap">
+        <table>
+          <tr><th>Header File</th><th>Kya deta hai</th></tr>
+          <tr><td><code>&lt;stdio.h&gt;</code></td><td>printf, scanf, getchar, putchar, fopen, fclose</td></tr>
+          <tr><td><code>&lt;stdlib.h&gt;</code></td><td>malloc, free, exit, atoi, rand, abs</td></tr>
+          <tr><td><code>&lt;string.h&gt;</code></td><td>strlen, strcpy, strcat, strcmp, strstr</td></tr>
+          <tr><td><code>&lt;math.h&gt;</code></td><td>sqrt, pow, sin, cos, log, ceil, floor</td></tr>
+          <tr><td><code>&lt;ctype.h&gt;</code></td><td>isalpha, isdigit, toupper, tolower</td></tr>
+          <tr><td><code>&lt;time.h&gt;</code></td><td>time, clock, difftime</td></tr>
+        </table>
+        </div>
+      </div>
+      <div class="warn"><strong>⚠️ Common Mistake</strong>Semicolon (;) bhoolna sabse common beginner mistake hai. Har statement ke baad lagao!</div>
+      <button class="mark-done" onclick="markDone(this,'l2')">✓ Mark as Done</button>
+    </div>
+  </div>
+
+  <!-- Lesson 3 -->
+  <a class="section-anchor" id="ch1-io"></a>
+  <div class="lesson" id="l3">
+    <div class="lesson-title" onclick="toggleLesson('l3')">
+      <span style="color:var(--accent);font-family:'JetBrains Mono',monospace;font-size:12px">03</span>
+      &nbsp;Input / Output — printf aur scanf Deep Dive
+      <span class="lt-icon">▾</span>
+    </div>
+    <div class="lesson-content">
+      <div class="concept">
+        <h3>printf — Output Karna</h3>
+<pre><span class="lang">C</span><span class="fn">printf</span>(<span class="str">"Hello %s, tumhari age %d saal hai!\n"</span>, name, age);
+
+<span class="cm">/* Escape Sequences */</span>
+<span class="fn">printf</span>(<span class="str">"\n"</span>);   <span class="cm">// New line</span>
+<span class="fn">printf</span>(<span class="str">"\t"</span>);   <span class="cm">// Tab space</span>
+<span class="fn">printf</span>(<span class="str">"\\"</span>);   <span class="cm">// Backslash print karo</span>
+<span class="fn">printf</span>(<span class="str">"\""</span>);   <span class="cm">// Quote print karo</span>
+
+<span class="cm">/* Width aur precision */</span>
+<span class="fn">printf</span>(<span class="str">"%10d"</span>, <span class="nm">42</span>);      <span class="cm">// 10 width mein right-align</span>
+<span class="fn">printf</span>(<span class="str">"%-10d"</span>, <span class="nm">42</span>);     <span class="cm">// 10 width mein left-align</span>
+<span class="fn">printf</span>(<span class="str">"%.2f"</span>, <span class="nm">3.14159</span>);  <span class="cm">// 2 decimal places = 3.14</span>
+<span class="fn">printf</span>(<span class="str">"%05d"</span>, <span class="nm">42</span>);      <span class="cm">// zeros se fill = 00042</span></pre>
+      </div>
+      <div class="concept">
+        <h3>scanf — Input Lena</h3>
+<pre><span class="lang">C</span><span class="kw2">int</span> age;
+<span class="kw2">float</span> height;
+<span class="kw2">char</span> name[<span class="nm">50</span>];
+
+<span class="fn">printf</span>(<span class="str">"Age daalo: "</span>);
+<span class="fn">scanf</span>(<span class="str">"%d"</span>, &amp;age);         <span class="cm">// &amp; lagana ZAROOR hai int/float ke liye</span>
+
+<span class="fn">printf</span>(<span class="str">"Height daalo: "</span>);
+<span class="fn">scanf</span>(<span class="str">"%f"</span>, &amp;height);
+
+<span class="fn">printf</span>(<span class="str">"Naam daalo: "</span>);
+<span class="fn">scanf</span>(<span class="str">"%s"</span>, name);         <span class="cm">// String mein & nahi lagta (array = pointer)</span>
+
+<span class="cm">/* Multiple inputs ek baar mein */</span>
+<span class="fn">scanf</span>(<span class="str">"%d %f"</span>, &amp;age, &amp;height);</pre>
+      </div>
+      <div class="concept">
+        <h3>getchar / putchar — Single Character</h3>
+<pre><span class="lang">C</span><span class="kw2">char</span> ch;
+<span class="fn">printf</span>(<span class="str">"Ek character daalo: "</span>);
+ch = <span class="fn">getchar</span>();   <span class="cm">// ek char input</span>
+<span class="fn">putchar</span>(ch);      <span class="cm">// ek char output</span>
+
+<span class="cm">/* gets aur puts — full string */</span>
+<span class="kw2">char</span> line[<span class="nm">100</span>];
+<span class="fn">fgets</span>(line, <span class="nm">100</span>, stdin);  <span class="cm">// safe string input (spaces ke saath)</span>
+<span class="fn">puts</span>(line);               <span class="cm">// string + newline print</span></pre>
+      </div>
+      <div class="warn"><strong>⚠️ gets() Mat Use Karo!</strong>gets() function unsafe hai — buffer overflow ho sakta hai. Hamesha fgets() use karo.</div>
+      <button class="mark-done" onclick="markDone(this,'l3')">✓ Mark as Done</button>
+    </div>
+  </div>
+</div>
+
+<!-- ====== CHAPTER 2 ====== -->
+<div class="chapter" id="ch2">
+  <div class="chapter-header">
+    <span class="chapter-num">CHAPTER 02</span>
+    <h2>Data Types, Variables & Constants</h2>
+  </div>
+
+  <a class="section-anchor" id="ch2-types"></a>
+  <div class="lesson" id="l4">
+    <div class="lesson-title" onclick="toggleLesson('l4')">
+      <span style="color:var(--accent);font-family:'JetBrains Mono',monospace;font-size:12px">04</span>
+      &nbsp;Data Types — Sab Kuch Deeply
+      <span class="lt-icon">▾</span>
+    </div>
+    <div class="lesson-content">
+      <div class="concept">
+        <h3>Primary Data Types</h3>
+        <div class="tbl-wrap">
+        <table>
+          <tr><th>Type</th><th>Size (typical)</th><th>Range</th><th>Format</th><th>Use</th></tr>
+          <tr><td><code>char</code></td><td>1 byte</td><td>-128 to 127</td><td>%c</td><td>Single character</td></tr>
+          <tr><td><code>unsigned char</code></td><td>1 byte</td><td>0 to 255</td><td>%c / %u</td><td>Positive char</td></tr>
+          <tr><td><code>short int</code></td><td>2 bytes</td><td>-32,768 to 32,767</td><td>%hd</td><td>Small numbers</td></tr>
+          <tr><td><code>int</code></td><td>4 bytes</td><td>-2.1B to 2.1B</td><td>%d</td><td>Whole numbers</td></tr>
+          <tr><td><code>unsigned int</code></td><td>4 bytes</td><td>0 to 4.29B</td><td>%u</td><td>Positive whole numbers</td></tr>
+          <tr><td><code>long int</code></td><td>4/8 bytes</td><td>Very large</td><td>%ld</td><td>Large integers</td></tr>
+          <tr><td><code>long long int</code></td><td>8 bytes</td><td>~9.2 × 10¹⁸</td><td>%lld</td><td>Very large integers</td></tr>
+          <tr><td><code>float</code></td><td>4 bytes</td><td>~3.4 × 10³⁸</td><td>%f</td><td>Decimal numbers (6 digits precision)</td></tr>
+          <tr><td><code>double</code></td><td>8 bytes</td><td>~1.7 × 10³⁰⁸</td><td>%lf</td><td>High precision decimal (15 digits)</td></tr>
+          <tr><td><code>long double</code></td><td>10/16 bytes</td><td>Even larger</td><td>%Lf</td><td>Very high precision</td></tr>
+          <tr><td><code>void</code></td><td>0</td><td>—</td><td>—</td><td>No value / generic pointer</td></tr>
+        </table>
+        </div>
+      </div>
+      <div class="concept">
+        <h3>sizeof() — Size Check Karo</h3>
+<pre><span class="lang">C</span><span class="pp">#include</span> <span class="str">&lt;stdio.h&gt;</span>
+<span class="kw2">int</span> <span class="fn">main</span>() {
+    <span class="fn">printf</span>(<span class="str">"char   = %zu bytes\n"</span>, <span class="kw">sizeof</span>(<span class="kw2">char</span>));
+    <span class="fn">printf</span>(<span class="str">"int    = %zu bytes\n"</span>, <span class="kw">sizeof</span>(<span class="kw2">int</span>));
+    <span class="fn">printf</span>(<span class="str">"float  = %zu bytes\n"</span>, <span class="kw">sizeof</span>(<span class="kw2">float</span>));
+    <span class="fn">printf</span>(<span class="str">"double = %zu bytes\n"</span>, <span class="kw">sizeof</span>(<span class="kw2">double</span>));
+    <span class="kw">return</span> <span class="nm">0</span>;
+}</pre>
+      </div>
+      <div class="tip"><strong>💡 Pro Tip</strong>Hamesha sahi data type choose karo. Age ke liye int enough hai, pi ke liye double use karo.</div>
+      <button class="mark-done" onclick="markDone(this,'l4')">✓ Mark as Done</button>
+    </div>
+  </div>
+
+  <a class="section-anchor" id="ch2-vars"></a>
+  <div class="lesson" id="l5">
+    <div class="lesson-title" onclick="toggleLesson('l5')">
+      <span style="color:var(--accent);font-family:'JetBrains Mono',monospace;font-size:12px">05</span>
+      &nbsp;Variables & Constants — Declaration to Usage
+      <span class="lt-icon">▾</span>
+    </div>
+    <div class="lesson-content">
+      <div class="concept">
+        <h3>Variable Declare Karna</h3>
+<pre><span class="lang">C</span><span class="cm">/* Syntax: datatype variable_name = value; */</span>
+
+<span class="kw2">int</span> age = <span class="nm">20</span>;
+<span class="kw2">float</span> gpa = <span class="nm">8.75</span>;
+<span class="kw2">char</span> grade = <span class="str">'A'</span>;     <span class="cm">// char ke liye single quotes</span>
+<span class="kw2">double</span> salary = <span class="nm">75000.50</span>;
+
+<span class="cm">/* Multiple variables ek line mein */</span>
+<span class="kw2">int</span> a = <span class="nm">1</span>, b = <span class="nm">2</span>, c = <span class="nm">3</span>;
+
+<span class="cm">/* Pehle declare, baad mein assign */</span>
+<span class="kw2">int</span> score;
+score = <span class="nm">95</span>;</pre>
+      </div>
+      <div class="concept">
+        <h3>Constants — Values Jo Badlein Nahi</h3>
+<pre><span class="lang">C</span><span class="cm">/* Method 1: const keyword */</span>
+<span class="kw">const</span> <span class="kw2">float</span> PI = <span class="nm">3.14159</span>;
+<span class="kw">const</span> <span class="kw2">int</span> MAX_SIZE = <span class="nm">100</span>;
+
+<span class="cm">/* Method 2: #define (preprocessor constant) */</span>
+<span class="pp">#define</span> PI 3.14159
+<span class="pp">#define</span> MAX 100
+<span class="pp">#define</span> GREETING "Hello World"
+
+<span class="cm">/* #define mein = aur ; nahi lagate! */</span></pre>
+      </div>
+      <div class="concept">
+        <h3>Variable Naming Rules</h3>
+        <ul>
+          <li>Sirf letters (a-z, A-Z), digits (0-9), underscore (_) allowed</li>
+          <li>Digit se shuru nahi ho sakta: <code>2name</code> ❌, <code>name2</code> ✅</li>
+          <li>C keywords reserved hain: <code>int</code>, <code>for</code>, <code>while</code> naam nahi ho sakta</li>
+          <li>Case-sensitive: <code>Age</code> aur <code>age</code> alag variables hain!</li>
+          <li>Meaningful naam rakho: <code>a</code> ki jagah <code>studentAge</code> better hai</li>
+        </ul>
+      </div>
+      <div class="concept">
+        <h3>Type Casting — Type Convert Karna</h3>
+<pre><span class="lang">C</span><span class="kw2">int</span> a = <span class="nm">5</span>, b = <span class="nm">2</span>;
+<span class="kw2">float</span> result;
+
+result = a / b;                    <span class="cm">// 2 (int division!)</span>
+result = (<span class="kw2">float</span>)a / b;            <span class="cm">// 2.5 (explicit cast)</span>
+result = (<span class="kw2">float</span>)(a / b);          <span class="cm">// 2.0 (pehle divide, phir cast)</span>
+
+<span class="cm">/* Implicit casting bhi hoti hai */</span>
+<span class="kw2">int</span> x = <span class="nm">65</span>;
+<span class="kw2">char</span> ch = x;   <span class="cm">// ch = 'A' (ASCII 65)</span></pre>
+      </div>
+      <div class="warn"><strong>⚠️ Integer Division</strong>int / int = int (decimal cut jaata hai)! 7/2 = 3, not 3.5. Float result chahiye toh cast karo.</div>
+      <button class="mark-done" onclick="markDone(this,'l5')">✓ Mark as Done</button>
+    </div>
+  </div>
+
+  <a class="section-anchor" id="ch2-format"></a>
+  <div class="lesson" id="l6">
+    <div class="lesson-title" onclick="toggleLesson('l6')">
+      <span style="color:var(--accent);font-family:'JetBrains Mono',monospace;font-size:12px">06</span>
+      &nbsp;Format Specifiers — Complete Reference
+      <span class="lt-icon">▾</span>
+    </div>
+    <div class="lesson-content">
+      <div class="tbl-wrap">
+      <table>
+        <tr><th>Specifier</th><th>Type</th><th>Example</th><th>Output</th></tr>
+        <tr><td><code>%d</code></td><td>int (decimal)</td><td>printf("%d", 42)</td><td>42</td></tr>
+        <tr><td><code>%i</code></td><td>int (integer)</td><td>printf("%i", 42)</td><td>42</td></tr>
+        <tr><td><code>%u</code></td><td>unsigned int</td><td>printf("%u", 42)</td><td>42</td></tr>
+        <tr><td><code>%f</code></td><td>float/double</td><td>printf("%f", 3.14)</td><td>3.140000</td></tr>
+        <tr><td><code>%.2f</code></td><td>float (2 decimal)</td><td>printf("%.2f", 3.14)</td><td>3.14</td></tr>
+        <tr><td><code>%e</code></td><td>Scientific notation</td><td>printf("%e", 3.14)</td><td>3.140000e+00</td></tr>
+        <tr><td><code>%c</code></td><td>char</td><td>printf("%c", 'A')</td><td>A</td></tr>
+        <tr><td><code>%s</code></td><td>string</td><td>printf("%s", "hi")</td><td>hi</td></tr>
+        <tr><td><code>%p</code></td><td>pointer address</td><td>printf("%p", ptr)</td><td>0x7ffd...</td></tr>
+        <tr><td><code>%x</code></td><td>Hexadecimal</td><td>printf("%x", 255)</td><td>ff</td></tr>
+        <tr><td><code>%o</code></td><td>Octal</td><td>printf("%o", 8)</td><td>10</td></tr>
+        <tr><td><code>%ld</code></td><td>long int</td><td>printf("%ld", val)</td><td>large num</td></tr>
+        <tr><td><code>%lld</code></td><td>long long int</td><td>printf("%lld", val)</td><td>very large</td></tr>
+        <tr><td><code>%lf</code></td><td>double (scanf)</td><td>scanf("%lf", &d)</td><td>—</td></tr>
+        <tr><td><code>%%</code></td><td>Literal % sign</td><td>printf("100%%")</td><td>100%</td></tr>
+      </table>
+      </div>
+      <button class="mark-done" onclick="markDone(this,'l6')">✓ Mark as Done</button>
+    </div>
+  </div>
+</div>
+
+<!-- ====== CHAPTER 3 ====== -->
+<div class="chapter" id="ch3">
+  <div class="chapter-header">
+    <span class="chapter-num">CHAPTER 03</span>
+    <h2>Operators — Sab Types Deeply</h2>
+  </div>
+
+  <a class="section-anchor" id="ch3-arith"></a>
+  <div class="lesson" id="l7">
+    <div class="lesson-title" onclick="toggleLesson('l7')">
+      <span style="color:var(--accent);font-family:'JetBrains Mono',monospace;font-size:12px">07</span>
+      &nbsp;Arithmetic & Assignment Operators
+      <span class="lt-icon">▾</span>
+    </div>
+    <div class="lesson-content">
+<pre><span class="lang">C</span><span class="kw2">int</span> a = <span class="nm">10</span>, b = <span class="nm">3</span>;
+
+<span class="fn">printf</span>(<span class="str">"%d\n"</span>, a + b);   <span class="cm">// 13 — jod</span>
+<span class="fn">printf</span>(<span class="str">"%d\n"</span>, a - b);   <span class="cm">// 7  — ghata</span>
+<span class="fn">printf</span>(<span class="str">"%d\n"</span>, a * b);   <span class="cm">// 30 — guna</span>
+<span class="fn">printf</span>(<span class="str">"%d\n"</span>, a / b);   <span class="cm">// 3  — bhag (int division)</span>
+<span class="fn">printf</span>(<span class="str">"%d\n"</span>, a % b);   <span class="cm">// 1  — remainder (modulo)</span>
+
+<span class="cm">/* Increment / Decrement */</span>
+<span class="kw2">int</span> x = <span class="nm">5</span>;
+x++;   <span class="cm">// x = 6 (post-increment)</span>
+++x;   <span class="cm">// x = 7 (pre-increment)</span>
+x--;   <span class="cm">// x = 6 (post-decrement)</span>
+
+<span class="cm">/* Pre vs Post difference */</span>
+<span class="kw2">int</span> y = <span class="nm">5</span>;
+<span class="fn">printf</span>(<span class="str">"%d\n"</span>, y++);  <span class="cm">// 5 print hoga, PHIR y=6</span>
+<span class="fn">printf</span>(<span class="str">"%d\n"</span>, ++y);  <span class="cm">// y=7 pehle, PHIR 7 print</span>
+
+<span class="cm">/* Assignment Operators */</span>
+a += <span class="nm">5</span>;   <span class="cm">// a = a + 5</span>
+a -= <span class="nm">2</span>;   <span class="cm">// a = a - 2</span>
+a *= <span class="nm">3</span>;   <span class="cm">// a = a * 3</span>
+a /= <span class="nm">4</span>;   <span class="cm">// a = a / 4</span>
+a %= <span class="nm">7</span>;   <span class="cm">// a = a % 7</span></pre>
+      <button class="mark-done" onclick="markDone(this,'l7')">✓ Mark as Done</button>
+    </div>
+  </div>
+
+  <a class="section-anchor" id="ch3-rel"></a>
+  <div class="lesson" id="l8">
+    <div class="lesson-title" onclick="toggleLesson('l8')">
+      <span style="color:var(--accent);font-family:'JetBrains Mono',monospace;font-size:12px">08</span>
+      &nbsp;Relational & Logical Operators
+      <span class="lt-icon">▾</span>
+    </div>
+    <div class="lesson-content">
+<pre><span class="lang">C</span><span class="kw2">int</span> a = <span class="nm">5</span>, b = <span class="nm">10</span>;
+
+<span class="cm">/* Relational — result 1 (true) ya 0 (false) */</span>
+<span class="fn">printf</span>(<span class="str">"%d\n"</span>, a == b);  <span class="cm">// 0 — equal?</span>
+<span class="fn">printf</span>(<span class="str">"%d\n"</span>, a != b);  <span class="cm">// 1 — not equal?</span>
+<span class="fn">printf</span>(<span class="str">"%d\n"</span>, a &gt; b);   <span class="cm">// 0 — greater?</span>
+<span class="fn">printf</span>(<span class="str">"%d\n"</span>, a &lt; b);   <span class="cm">// 1 — less?</span>
+<span class="fn">printf</span>(<span class="str">"%d\n"</span>, a &gt;= b);  <span class="cm">// 0 — greater or equal?</span>
+<span class="fn">printf</span>(<span class="str">"%d\n"</span>, a &lt;= b);  <span class="cm">// 1 — less or equal?</span>
+
+<span class="cm">/* Logical Operators */</span>
+<span class="fn">printf</span>(<span class="str">"%d\n"</span>, (a &gt; <span class="nm">0</span>) &amp;&amp; (b &gt; <span class="nm">0</span>));  <span class="cm">// 1 — AND: dono true?</span>
+<span class="fn">printf</span>(<span class="str">"%d\n"</span>, (a &gt; <span class="nm">0</span>) || (b &lt; <span class="nm">0</span>));  <span class="cm">// 1 — OR: koi ek true?</span>
+<span class="fn">printf</span>(<span class="str">"%d\n"</span>, !(a &gt; <span class="nm">0</span>));             <span class="cm">// 0 — NOT: ulta</span>
+
+<span class="cm">/* Ternary Operator — short if-else */</span>
+<span class="kw2">int</span> max = (a &gt; b) ? a : b;  <span class="cm">// condition ? true_val : false_val</span>
+<span class="fn">printf</span>(<span class="str">"Max = %d\n"</span>, max);  <span class="cm">// 10</span></pre>
+      <div class="warn"><strong>⚠️ = vs ==</strong>= ek value assign karta hai, == compare karta hai. if(a = 5) galat hai, if(a == 5) sahi hai!</div>
+      <button class="mark-done" onclick="markDone(this,'l8')">✓ Mark as Done</button>
+    </div>
+  </div>
+
+  <a class="section-anchor" id="ch3-bit"></a>
+  <div class="lesson" id="l9">
+    <div class="lesson-title" onclick="toggleLesson('l9')">
+      <span style="color:var(--accent);font-family:'JetBrains Mono',monospace;font-size:12px">09</span>
+      &nbsp;Bitwise Operators — Bits Level Pe Kaam
+      <span class="lt-icon">▾</span>
+    </div>
+    <div class="lesson-content">
+      <div class="concept">
+        <h3>Bitwise — Binary Level Pe Operation</h3>
+<pre><span class="lang">C</span><span class="kw2">int</span> a = <span class="nm">12</span>; <span class="cm">// binary: 1100</span>
+<span class="kw2">int</span> b = <span class="nm">10</span>; <span class="cm">// binary: 1010</span>
+
+<span class="fn">printf</span>(<span class="str">"%d\n"</span>, a &amp; b);  <span class="cm">// 8  — AND:  1000</span>
+<span class="fn">printf</span>(<span class="str">"%d\n"</span>, a | b);  <span class="cm">// 14 — OR:  1110</span>
+<span class="fn">printf</span>(<span class="str">"%d\n"</span>, a ^ b);  <span class="cm">// 6  — XOR: 0110</span>
+<span class="fn">printf</span>(<span class="str">"%d\n"</span>, ~a);     <span class="cm">// -13 — NOT (bits paltao)</span>
+<span class="fn">printf</span>(<span class="str">"%d\n"</span>, a &lt;&lt; <span class="nm">1</span>); <span class="cm">// 24 — left shift (×2)</span>
+<span class="fn">printf</span>(<span class="str">"%d\n"</span>, a &gt;&gt; <span class="nm">1</span>); <span class="cm">// 6  — right shift (÷2)</span></pre>
+      </div>
+      <div class="tip"><strong>💡 Useful Tricks</strong>n &lt;&lt; 1 = n×2, n &gt;&gt; 1 = n÷2 (fast multiplication/division). n &amp; 1 = 1 means n odd hai.</div>
+      <button class="mark-done" onclick="markDone(this,'l9')">✓ Mark as Done</button>
+    </div>
+  </div>
+</div>
+
+<!-- ====== CHAPTER 4 ====== -->
+<div class="chapter" id="ch4">
+  <div class="chapter-header">
+    <span class="chapter-num">CHAPTER 04</span>
+    <h2>Control Flow — Program Ka Direction</h2>
+  </div>
+
+  <a class="section-anchor" id="ch4-if"></a>
+  <div class="lesson" id="l10">
+    <div class="lesson-title" onclick="toggleLesson('l10')">
+      <span style="color:var(--accent);font-family:'JetBrains Mono',monospace;font-size:12px">10</span>
+      &nbsp;if / else if / else / switch
+      <span class="lt-icon">▾</span>
+    </div>
+    <div class="lesson-content">
+<pre><span class="lang">C</span><span class="kw2">int</span> marks = <span class="nm">78</span>;
+
+<span class="cm">/* Basic if-else if-else */</span>
+<span class="kw">if</span> (marks &gt;= <span class="nm">90</span>) {
+    <span class="fn">printf</span>(<span class="str">"Grade: A+\n"</span>);
+} <span class="kw">else if</span> (marks &gt;= <span class="nm">80</span>) {
+    <span class="fn">printf</span>(<span class="str">"Grade: A\n"</span>);
+} <span class="kw">else if</span> (marks &gt;= <span class="nm">70</span>) {
+    <span class="fn">printf</span>(<span class="str">"Grade: B\n"</span>);  <span class="cm">// Yeh chalega (78 >= 70)</span>
+} <span class="kw">else if</span> (marks &gt;= <span class="nm">60</span>) {
+    <span class="fn">printf</span>(<span class="str">"Grade: C\n"</span>);
+} <span class="kw">else</span> {
+    <span class="fn">printf</span>(<span class="str">"Fail!\n"</span>);
+}
+
+<span class="cm">/* Nested if */</span>
+<span class="kw">if</span> (marks &gt; <span class="nm">50</span>) {
+    <span class="kw">if</span> (marks &gt; <span class="nm">75</span>) {
+        <span class="fn">printf</span>(<span class="str">"Distinction!\n"</span>);
+    } <span class="kw">else</span> {
+        <span class="fn">printf</span>(<span class="str">"Pass\n"</span>);
+    }
+}</pre>
+<pre><span class="lang">C — switch</span><span class="kw2">int</span> day = <span class="nm">3</span>;
+<span class="kw">switch</span>(day) {
+    <span class="kw">case</span> <span class="nm">1</span>:
+        <span class="fn">printf</span>(<span class="str">"Monday\n"</span>);
+        <span class="kw">break</span>;  <span class="cm">// zaroor lagao!</span>
+    <span class="kw">case</span> <span class="nm">2</span>:
+        <span class="fn">printf</span>(<span class="str">"Tuesday\n"</span>);
+        <span class="kw">break</span>;
+    <span class="kw">case</span> <span class="nm">3</span>:
+        <span class="fn">printf</span>(<span class="str">"Wednesday\n"</span>);  <span class="cm">// Yeh chalega</span>
+        <span class="kw">break</span>;
+    <span class="kw">default</span>:
+        <span class="fn">printf</span>(<span class="str">"Invalid!\n"</span>);
+}
+
+<span class="cm">/* Fall-through (intentional) */</span>
+<span class="kw">switch</span>(day) {
+    <span class="kw">case</span> <span class="nm">1</span>:
+    <span class="kw">case</span> <span class="nm">2</span>:
+    <span class="kw">case</span> <span class="nm">3</span>:
+    <span class="kw">case</span> <span class="nm">4</span>:
+    <span class="kw">case</span> <span class="nm">5</span>:
+        <span class="fn">printf</span>(<span class="str">"Weekday\n"</span>);
+        <span class="kw">break</span>;
+    <span class="kw">case</span> <span class="nm">6</span>:
+    <span class="kw">case</span> <span class="nm">7</span>:
+        <span class="fn">printf</span>(<span class="str">"Weekend!\n"</span>);
+        <span class="kw">break</span>;
+}</pre>
+      <div class="warn"><strong>⚠️ switch mein break bhoolna</strong>Break nahi lagaya toh neeche ke sare cases bhi chal jaenge (fall-through)! Kuch baar yeh intentional hota hai.</div>
+      <button class="mark-done" onclick="markDone(this,'l10')">✓ Mark as Done</button>
+    </div>
+  </div>
+
+  <a class="section-anchor" id="ch4-loops"></a>
+  <div class="lesson" id="l11">
+    <div class="lesson-title" onclick="toggleLesson('l11')">
+      <span style="color:var(--accent);font-family:'JetBrains Mono',monospace;font-size:12px">11</span>
+      &nbsp;Loops — for, while, do-while Deep Dive
+      <span class="lt-icon">▾</span>
+    </div>
+    <div class="lesson-content">
+<pre><span class="lang">C — for loop</span><span class="cm">/* Syntax: for(initialization; condition; update) */</span>
+<span class="kw">for</span> (<span class="kw2">int</span> i = <span class="nm">0</span>; i &lt; <span class="nm">5</span>; i++) {
+    <span class="fn">printf</span>(<span class="str">"%d "</span>, i);  <span class="cm">// 0 1 2 3 4</span>
+}
+
+<span class="cm">/* Reverse loop */</span>
+<span class="kw">for</span> (<span class="kw2">int</span> i = <span class="nm">5</span>; i &gt; <span class="nm">0</span>; i--) {
+    <span class="fn">printf</span>(<span class="str">"%d "</span>, i);  <span class="cm">// 5 4 3 2 1</span>
+}
+
+<span class="cm">/* Nested for — multiplication table */</span>
+<span class="kw">for</span> (<span class="kw2">int</span> i = <span class="nm">1</span>; i &lt;= <span class="nm">5</span>; i++) {
+    <span class="kw">for</span> (<span class="kw2">int</span> j = <span class="nm">1</span>; j &lt;= <span class="nm">5</span>; j++) {
+        <span class="fn">printf</span>(<span class="str">"%4d"</span>, i*j);
+    }
+    <span class="fn">printf</span>(<span class="str">"\n"</span>);
+}</pre>
+<pre><span class="lang">C — while loop</span><span class="cm">/* Jab pata nahi kitni baar chalana */</span>
+<span class="kw2">int</span> n = <span class="nm">10</span>;
+<span class="kw">while</span> (n &gt; <span class="nm">0</span>) {
+    <span class="fn">printf</span>(<span class="str">"%d "</span>, n);
+    n -= <span class="nm">2</span>;  <span class="cm">// 10 8 6 4 2</span>
+}
+
+<span class="cm">/* Input validate karna */</span>
+<span class="kw2">int</span> age;
+<span class="fn">printf</span>(<span class="str">"Age daalo (1-100): "</span>);
+<span class="fn">scanf</span>(<span class="str">"%d"</span>, &amp;age);
+<span class="kw">while</span> (age &lt; <span class="nm">1</span> || age &gt; <span class="nm">100</span>) {
+    <span class="fn">printf</span>(<span class="str">"Invalid! Phir daalo: "</span>);
+    <span class="fn">scanf</span>(<span class="str">"%d"</span>, &amp;age);
+}</pre>
+<pre><span class="lang">C — do-while</span><span class="cm">/* Pehle chalao, phir condition check karo — MINIMUM 1 baar chalega */</span>
+<span class="kw2">int</span> choice;
+<span class="kw">do</span> {
+    <span class="fn">printf</span>(<span class="str">"\n1. Add\n2. Subtract\n3. Exit\nChoice: "</span>);
+    <span class="fn">scanf</span>(<span class="str">"%d"</span>, &amp;choice);
+    
+    <span class="kw">if</span> (choice == <span class="nm">1</span>) <span class="fn">printf</span>(<span class="str">"Add selected\n"</span>);
+    <span class="kw">else if</span> (choice == <span class="nm">2</span>) <span class="fn">printf</span>(<span class="str">"Subtract selected\n"</span>);
+    
+} <span class="kw">while</span> (choice != <span class="nm">3</span>);</pre>
+      <div class="tip"><strong>💡 Kab Kaunsa Loop?</strong>for = pata hai kitni baar | while = condition pe depend | do-while = kam se kam ek baar zaroor chale</div>
+      <button class="mark-done" onclick="markDone(this,'l11')">✓ Mark as Done</button>
+    </div>
+  </div>
+
+  <a class="section-anchor" id="ch4-break"></a>
+  <div class="lesson" id="l12">
+    <div class="lesson-title" onclick="toggleLesson('l12')">
+      <span style="color:var(--accent);font-family:'JetBrains Mono',monospace;font-size:12px">12</span>
+      &nbsp;break / continue / goto
+      <span class="lt-icon">▾</span>
+    </div>
+    <div class="lesson-content">
+<pre><span class="lang">C</span><span class="cm">/* break — loop se bahar niklo */</span>
+<span class="kw">for</span> (<span class="kw2">int</span> i = <span class="nm">0</span>; i &lt; <span class="nm">10</span>; i++) {
+    <span class="kw">if</span> (i == <span class="nm">5</span>) <span class="kw">break</span>;    <span class="cm">// 5 pe rokdo</span>
+    <span class="fn">printf</span>(<span class="str">"%d "</span>, i);  <span class="cm">// 0 1 2 3 4</span>
+}
+
+<span class="cm">/* continue — is iteration skip karo, agla chalo */</span>
+<span class="kw">for</span> (<span class="kw2">int</span> i = <span class="nm">0</span>; i &lt; <span class="nm">10</span>; i++) {
+    <span class="kw">if</span> (i % <span class="nm">2</span> == <span class="nm">0</span>) <span class="kw">continue</span>;  <span class="cm">// even skip karo</span>
+    <span class="fn">printf</span>(<span class="str">"%d "</span>, i);  <span class="cm">// 1 3 5 7 9 (sirf odd)</span>
+}
+
+<span class="cm">/* goto — kisi label pe jump karo (avoid karo usually!) */</span>
+<span class="kw2">int</span> i = <span class="nm">0</span>;
+loop_start:  <span class="cm">// label</span>
+    <span class="fn">printf</span>(<span class="str">"%d "</span>, i);
+    i++;
+    <span class="kw">if</span> (i &lt; <span class="nm">5</span>) <span class="kw">goto</span> loop_start;  <span class="cm">// wapas jao</span></pre>
+      <div class="danger"><strong>⚠️ goto use mat karo!</strong>goto se code "spaghetti" ban jaata hai — samajhna mushkil. Sirf ek valid use case: nested loops se ek saath bahar nikalna.</div>
+      <button class="mark-done" onclick="markDone(this,'l12')">✓ Mark as Done</button>
+    </div>
+  </div>
+</div>
+
+<!-- ====== CHAPTER 5 ====== -->
+<div class="chapter" id="ch5">
+  <div class="chapter-header">
+    <span class="chapter-num">CHAPTER 05</span>
+    <h2>Functions — Reusable Code Blocks</h2>
+  </div>
+
+  <a class="section-anchor" id="ch5-func"></a>
+  <div class="lesson" id="l13">
+    <div class="lesson-title" onclick="toggleLesson('l13')">
+      <span style="color:var(--accent);font-family:'JetBrains Mono',monospace;font-size:12px">13</span>
+      &nbsp;Functions — Declaration, Definition, Calling
+      <span class="lt-icon">▾</span>
+    </div>
+    <div class="lesson-content">
+<pre><span class="lang">C</span><span class="pp">#include</span> <span class="str">&lt;stdio.h&gt;</span>
+
+<span class="cm">/* Function Declaration (prototype) — main se pehle */</span>
+<span class="kw2">int</span> <span class="fn">add</span>(<span class="kw2">int</span> a, <span class="kw2">int</span> b);
+<span class="kw2">void</span> <span class="fn">greet</span>(<span class="kw2">char</span> name[]);
+<span class="kw2">float</span> <span class="fn">average</span>(<span class="kw2">float</span> arr[], <span class="kw2">int</span> n);
+
+<span class="kw2">int</span> <span class="fn">main</span>() {
+    <span class="kw2">int</span> result = <span class="fn">add</span>(<span class="nm">5</span>, <span class="nm">3</span>);
+    <span class="fn">printf</span>(<span class="str">"Sum = %d\n"</span>, result);  <span class="cm">// 8</span>
+    <span class="fn">greet</span>(<span class="str">"Rahul"</span>);
+    <span class="kw">return</span> <span class="nm">0</span>;
+}
+
+<span class="cm">/* Function Definitions */</span>
+<span class="kw2">int</span> <span class="fn">add</span>(<span class="kw2">int</span> a, <span class="kw2">int</span> b) {
+    <span class="kw">return</span> a + b;
+}
+
+<span class="kw2">void</span> <span class="fn">greet</span>(<span class="kw2">char</span> name[]) {
+    <span class="fn">printf</span>(<span class="str">"Namaste, %s!\n"</span>, name);
+    <span class="cm">// void mein return nahi hota (optional: return;)</span>
+}
+
+<span class="cm">/* Multiple return values? — Struct ya pointers use karo */</span>
+<span class="kw2">void</span> <span class="fn">minMax</span>(<span class="kw2">int</span> arr[], <span class="kw2">int</span> n, <span class="kw2">int</span>* min, <span class="kw2">int</span>* max) {
+    *min = *max = arr[<span class="nm">0</span>];
+    <span class="kw">for</span>(<span class="kw2">int</span> i = <span class="nm">1</span>; i &lt; n; i++) {
+        <span class="kw">if</span>(arr[i] &lt; *min) *min = arr[i];
+        <span class="kw">if</span>(arr[i] &gt; *max) *max = arr[i];
+    }
+}</pre>
+      <button class="mark-done" onclick="markDone(this,'l13')">✓ Mark as Done</button>
+    </div>
+  </div>
+
+  <a class="section-anchor" id="ch5-scope"></a>
+  <div class="lesson" id="l14">
+    <div class="lesson-title" onclick="toggleLesson('l14')">
+      <span style="color:var(--accent);font-family:'JetBrains Mono',monospace;font-size:12px">14</span>
+      &nbsp;Scope & Storage Classes
+      <span class="lt-icon">▾</span>
+    </div>
+    <div class="lesson-content">
+<pre><span class="lang">C</span><span class="pp">#include</span> <span class="str">&lt;stdio.h&gt;</span>
+
+<span class="kw2">int</span> global = <span class="nm">100</span>;   <span class="cm">// Global — poori file mein accessible</span>
+
+<span class="kw2">void</span> <span class="fn">func</span>() {
+    <span class="kw2">int</span> local = <span class="nm">10</span>;        <span class="cm">// Local — sirf is function mein</span>
+    <span class="kw">static</span> <span class="kw2">int</span> count = <span class="nm">0</span>;  <span class="cm">// Static — value yaad rakhti hai!</span>
+    count++;
+    <span class="fn">printf</span>(<span class="str">"Local=%d, Global=%d, Count=%d\n"</span>, local, global, count);
+}
+
+<span class="kw2">int</span> <span class="fn">main</span>() {
+    <span class="fn">func</span>();  <span class="cm">// Local=10, Global=100, Count=1</span>
+    <span class="fn">func</span>();  <span class="cm">// Local=10, Global=100, Count=2</span>
+    <span class="fn">func</span>();  <span class="cm">// Local=10, Global=100, Count=3</span>
+    <span class="kw">return</span> <span class="nm">0</span>;
+}</pre>
+      <div class="tbl-wrap">
+      <table>
+        <tr><th>Storage Class</th><th>Keyword</th><th>Lifetime</th><th>Default Value</th></tr>
+        <tr><td>Automatic</td><td><code>auto</code></td><td>Function execution</td><td>Garbage</td></tr>
+        <tr><td>Static</td><td><code>static</code></td><td>Program lifetime</td><td>0</td></tr>
+        <tr><td>External</td><td><code>extern</code></td><td>Program lifetime</td><td>0</td></tr>
+        <tr><td>Register</td><td><code>register</code></td><td>Function execution</td><td>Garbage</td></tr>
+      </table>
+      </div>
+      <button class="mark-done" onclick="markDone(this,'l14')">✓ Mark as Done</button>
+    </div>
+  </div>
+
+  <a class="section-anchor" id="ch5-rec"></a>
+  <div class="lesson" id="l15">
+    <div class="lesson-title" onclick="toggleLesson('l15')">
+      <span style="color:var(--accent);font-family:'JetBrains Mono',monospace;font-size:12px">15</span>
+      &nbsp;Recursion — Function Apne Aap Ko Call Karna
+      <span class="lt-icon">▾</span>
+    </div>
+    <div class="lesson-content">
+<pre><span class="lang">C — Factorial</span><span class="cm">/* n! = n × (n-1) × (n-2) × ... × 1 */</span>
+<span class="kw2">int</span> <span class="fn">factorial</span>(<span class="kw2">int</span> n) {
+    <span class="kw">if</span> (n == <span class="nm">0</span> || n == <span class="nm">1</span>) <span class="kw">return</span> <span class="nm">1</span>;  <span class="cm">// Base case</span>
+    <span class="kw">return</span> n * <span class="fn">factorial</span>(n - <span class="nm">1</span>);      <span class="cm">// Recursive case</span>
+}
+<span class="cm">/* factorial(5) = 5 * 4 * 3 * 2 * 1 = 120 */</span></pre>
+<pre><span class="lang">C — Fibonacci</span><span class="cm">/* 0, 1, 1, 2, 3, 5, 8, 13, ... */</span>
+<span class="kw2">int</span> <span class="fn">fib</span>(<span class="kw2">int</span> n) {
+    <span class="kw">if</span> (n &lt;= <span class="nm">1</span>) <span class="kw">return</span> n;
+    <span class="kw">return</span> <span class="fn">fib</span>(n-<span class="nm">1</span>) + <span class="fn">fib</span>(n-<span class="nm">2</span>);
+}</pre>
+<pre><span class="lang">C — Binary Search Recursive</span><span class="kw2">int</span> <span class="fn">binarySearch</span>(<span class="kw2">int</span> arr[], <span class="kw2">int</span> low, <span class="kw2">int</span> high, <span class="kw2">int</span> target) {
+    <span class="kw">if</span> (low &gt; high) <span class="kw">return</span> -<span class="nm">1</span>;  <span class="cm">// Not found</span>
+    <span class="kw2">int</span> mid = (low + high) / <span class="nm">2</span>;
+    <span class="kw">if</span> (arr[mid] == target) <span class="kw">return</span> mid;
+    <span class="kw">if</span> (arr[mid] &lt; target)  <span class="kw">return</span> <span class="fn">binarySearch</span>(arr, mid+<span class="nm">1</span>, high, target);
+    <span class="kw">return</span> <span class="fn">binarySearch</span>(arr, low, mid-<span class="nm">1</span>, target);
+}</pre>
+      <div class="warn"><strong>⚠️ Base Case Zaroor Lagao!</strong>Recursion mein base case (stopping condition) nahi lagaya toh infinite loop — program crash kar dega (stack overflow)!</div>
+      <button class="mark-done" onclick="markDone(this,'l15')">✓ Mark as Done</button>
+    </div>
+  </div>
+</div>
+
+<!-- ====== CHAPTER 6 ====== -->
+<div class="chapter" id="ch6">
+  <div class="chapter-header">
+    <span class="chapter-num">CHAPTER 06</span>
+    <h2>Arrays — Data Collections</h2>
+  </div>
+
+  <a class="section-anchor" id="ch6-1d"></a>
+  <div class="lesson" id="l16">
+    <div class="lesson-title" onclick="toggleLesson('l16')">
+      <span style="color:var(--accent);font-family:'JetBrains Mono',monospace;font-size:12px">16</span>
+      &nbsp;1D Arrays — Sab Kuch
+      <span class="lt-icon">▾</span>
+    </div>
+    <div class="lesson-content">
+<pre><span class="lang">C</span><span class="cm">/* Declaration aur Initialization */</span>
+<span class="kw2">int</span> marks[<span class="nm">5</span>];                         <span class="cm">// Sirf declare (garbage values)</span>
+<span class="kw2">int</span> scores[<span class="nm">5</span>] = {<span class="nm">90</span>,<span class="nm">85</span>,<span class="nm">78</span>,<span class="nm">92</span>,<span class="nm">88</span>};   <span class="cm">// Declare + Initialize</span>
+<span class="kw2">int</span> zeros[<span class="nm">5</span>] = {<span class="nm">0</span>};                   <span class="cm">// Sab 0 se initialize</span>
+<span class="kw2">int</span> arr[] = {<span class="nm">1</span>,<span class="nm">2</span>,<span class="nm">3</span>,<span class="nm">4</span>,<span class="nm">5</span>};            <span class="cm">// Size auto detect</span>
+
+<span class="cm">/* Access — index 0 se shuru! */</span>
+<span class="fn">printf</span>(<span class="str">"%d\n"</span>, scores[<span class="nm">0</span>]);  <span class="cm">// 90 (pehla)</span>
+<span class="fn">printf</span>(<span class="str">"%d\n"</span>, scores[<span class="nm">4</span>]);  <span class="cm">// 88 (aakhri)</span>
+
+<span class="cm">/* Loop se traverse */</span>
+<span class="kw2">int</span> n = <span class="kw">sizeof</span>(scores) / <span class="kw">sizeof</span>(scores[<span class="nm">0</span>]);  <span class="cm">// Size nikalna</span>
+<span class="kw">for</span> (<span class="kw2">int</span> i = <span class="nm">0</span>; i &lt; n; i++) {
+    <span class="fn">printf</span>(<span class="str">"scores[%d] = %d\n"</span>, i, scores[i]);
+}
+
+<span class="cm">/* Sum aur Average */</span>
+<span class="kw2">int</span> sum = <span class="nm">0</span>;
+<span class="kw">for</span> (<span class="kw2">int</span> i = <span class="nm">0</span>; i &lt; n; i++) sum += scores[i];
+<span class="fn">printf</span>(<span class="str">"Average = %.2f\n"</span>, (<span class="kw2">float</span>)sum / n);
+
+<span class="cm">/* Bubble Sort */</span>
+<span class="kw">for</span> (<span class="kw2">int</span> i = <span class="nm">0</span>; i &lt; n-<span class="nm">1</span>; i++) {
+    <span class="kw">for</span> (<span class="kw2">int</span> j = <span class="nm">0</span>; j &lt; n-i-<span class="nm">1</span>; j++) {
+        <span class="kw">if</span> (scores[j] &gt; scores[j+<span class="nm">1</span>]) {
+            <span class="kw2">int</span> temp = scores[j];
+            scores[j] = scores[j+<span class="nm">1</span>];
+            scores[j+<span class="nm">1</span>] = temp;
+        }
+    }
+}</pre>
+      <div class="danger"><strong>⚠️ Array Out of Bounds!</strong>C mein array bounds check nahi hoti! arr[10] access karna (5 element array mein) undefined behavior hai — program crash ho sakta hai ya galat result de sakta hai.</div>
+      <button class="mark-done" onclick="markDone(this,'l16')">✓ Mark as Done</button>
+    </div>
+  </div>
+
+  <a class="section-anchor" id="ch6-2d"></a>
+  <div class="lesson" id="l17">
+    <div class="lesson-title" onclick="toggleLesson('l17')">
+      <span style="color:var(--accent);font-family:'JetBrains Mono',monospace;font-size:12px">17</span>
+      &nbsp;2D Arrays — Matrix Operations
+      <span class="lt-icon">▾</span>
+    </div>
+    <div class="lesson-content">
+<pre><span class="lang">C</span><span class="cm">/* 2D Array = rows x columns */</span>
+<span class="kw2">int</span> matrix[<span class="nm">3</span>][<span class="nm">3</span>] = {
+    {<span class="nm">1</span>, <span class="nm">2</span>, <span class="nm">3</span>},
+    {<span class="nm">4</span>, <span class="nm">5</span>, <span class="nm">6</span>},
+    {<span class="nm">7</span>, <span class="nm">8</span>, <span class="nm">9</span>}
+};
+
+<span class="cm">/* Access: matrix[row][col] */</span>
+<span class="fn">printf</span>(<span class="str">"%d\n"</span>, matrix[<span class="nm">0</span>][<span class="nm">0</span>]);  <span class="cm">// 1 (row 0, col 0)</span>
+<span class="fn">printf</span>(<span class="str">"%d\n"</span>, matrix[<span class="nm">1</span>][<span class="nm">2</span>]);  <span class="cm">// 6 (row 1, col 2)</span>
+<span class="fn">printf</span>(<span class="str">"%d\n"</span>, matrix[<span class="nm">2</span>][<span class="nm">2</span>]);  <span class="cm">// 9 (row 2, col 2)</span>
+
+<span class="cm">/* Print matrix */</span>
+<span class="kw">for</span> (<span class="kw2">int</span> i = <span class="nm">0</span>; i &lt; <span class="nm">3</span>; i++) {
+    <span class="kw">for</span> (<span class="kw2">int</span> j = <span class="nm">0</span>; j &lt; <span class="nm">3</span>; j++) {
+        <span class="fn">printf</span>(<span class="str">"%4d"</span>, matrix[i][j]);
+    }
+    <span class="fn">printf</span>(<span class="str">"\n"</span>);
+}
+
+<span class="cm">/* Matrix multiplication */</span>
+<span class="kw2">int</span> a[<span class="nm">2</span>][<span class="nm">2</span>] = {{<span class="nm">1</span>,<span class="nm">2</span>},{<span class="nm">3</span>,<span class="nm">4</span>}};
+<span class="kw2">int</span> b[<span class="nm">2</span>][<span class="nm">2</span>] = {{<span class="nm">5</span>,<span class="nm">6</span>},{<span class="nm">7</span>,<span class="nm">8</span>}};
+<span class="kw2">int</span> result[<span class="nm">2</span>][<span class="nm">2</span>] = {<span class="nm">0</span>};
+
+<span class="kw">for</span>(<span class="kw2">int</span> i=<span class="nm">0</span>;i&lt;<span class="nm">2</span>;i++)
+    <span class="kw">for</span>(<span class="kw2">int</span> j=<span class="nm">0</span>;j&lt;<span class="nm">2</span>;j++)
+        <span class="kw">for</span>(<span class="kw2">int</span> k=<span class="nm">0</span>;k&lt;<span class="nm">2</span>;k++)
+            result[i][j] += a[i][k] * b[k][j];</pre>
+      <button class="mark-done" onclick="markDone(this,'l17')">✓ Mark as Done</button>
+    </div>
+  </div>
+
+  <a class="section-anchor" id="ch6-arr-fn"></a>
+  <div class="lesson" id="l18">
+    <div class="lesson-title" onclick="toggleLesson('l18')">
+      <span style="color:var(--accent);font-family:'JetBrains Mono',monospace;font-size:12px">18</span>
+      &nbsp;Arrays in Functions — Pass by Reference
+      <span class="lt-icon">▾</span>
+    </div>
+    <div class="lesson-content">
+<pre><span class="lang">C</span><span class="cm">/* Array function mein pointer ki tarah pass hota hai */</span>
+<span class="kw2">void</span> <span class="fn">printArray</span>(<span class="kw2">int</span> arr[], <span class="kw2">int</span> n) {  <span class="cm">// arr[] = int* arr</span>
+    <span class="kw">for</span>(<span class="kw2">int</span> i=<span class="nm">0</span>; i&lt;n; i++)
+        <span class="fn">printf</span>(<span class="str">"%d "</span>, arr[i]);
+}
+
+<span class="kw2">void</span> <span class="fn">doubleElements</span>(<span class="kw2">int</span> arr[], <span class="kw2">int</span> n) {
+    <span class="kw">for</span>(<span class="kw2">int</span> i=<span class="nm">0</span>; i&lt;n; i++)
+        arr[i] *= <span class="nm">2</span>;  <span class="cm">// Original array modify hoga!</span>
+}
+
+<span class="kw2">int</span> <span class="fn">main</span>() {
+    <span class="kw2">int</span> nums[] = {<span class="nm">1</span>,<span class="nm">2</span>,<span class="nm">3</span>,<span class="nm">4</span>,<span class="nm">5</span>};
+    <span class="kw2">int</span> n = <span class="nm">5</span>;
+    <span class="fn">doubleElements</span>(nums, n);
+    <span class="fn">printArray</span>(nums, n);  <span class="cm">// 2 4 6 8 10</span>
+    <span class="kw">return</span> <span class="nm">0</span>;
+}</pre>
+      <div class="info"><strong>📌 Important</strong>Array function mein pass karte time copy nahi banti — original array ka pointer jaata hai. Isliye function mein changes original array mein reflect hote hain.</div>
+      <button class="mark-done" onclick="markDone(this,'l18')">✓ Mark as Done</button>
+    </div>
+  </div>
+</div>
+
+<!-- ====== CHAPTER 7 ====== -->
+<div class="chapter" id="ch7">
+  <div class="chapter-header">
+    <span class="chapter-num">CHAPTER 07</span>
+    <h2>Strings — Character Arrays</h2>
+  </div>
+
+  <a class="section-anchor" id="ch7-str"></a>
+  <div class="lesson" id="l19">
+    <div class="lesson-title" onclick="toggleLesson('l19')">
+      <span style="color:var(--accent);font-family:'JetBrains Mono',monospace;font-size:12px">19</span>
+      &nbsp;Strings — Basics aur Input/Output
+      <span class="lt-icon">▾</span>
+    </div>
+    <div class="lesson-content">
+<pre><span class="lang">C</span><span class="cm">/* String = char array with null terminator '\0' */</span>
+<span class="kw2">char</span> name[<span class="nm">10</span>] = <span class="str">"Rahul"</span>;
+<span class="cm">/* Memory: R a h u l \0 _ _ _ _ */</span>
+<span class="cm">/*         0 1 2 3 4  5         (index) */</span>
+
+<span class="kw2">char</span> city[] = <span class="str">"Ahmedabad"</span>;  <span class="cm">// Size auto (10 = 9 + '\0')</span>
+
+<span class="cm">/* Manual initialization */</span>
+<span class="kw2">char</span> str[] = {<span class="str">'H'</span>,<span class="str">'i'</span>,<span class="str">'\0'</span>};  <span class="cm">// '\0' zaroor!</span>
+
+<span class="cm">/* String I/O */</span>
+<span class="kw2">char</span> input[<span class="nm">100</span>];
+<span class="fn">scanf</span>(<span class="str">"%s"</span>, input);           <span class="cm">// Space se pehle tak</span>
+<span class="fn">fgets</span>(input, <span class="nm">100</span>, stdin);    <span class="cm">// Full line with spaces</span>
+<span class="fn">printf</span>(<span class="str">"%s\n"</span>, input);
+
+<span class="cm">/* String traverse */</span>
+<span class="kw">for</span>(<span class="kw2">int</span> i=<span class="nm">0</span>; name[i]!=<span class="str">'\0'</span>; i++)
+    <span class="fn">printf</span>(<span class="str">"%c"</span>, name[i]);</pre>
+      <button class="mark-done" onclick="markDone(this,'l19')">✓ Mark as Done</button>
+    </div>
+  </div>
+
+  <a class="section-anchor" id="ch7-lib"></a>
+  <div class="lesson" id="l20">
+    <div class="lesson-title" onclick="toggleLesson('l20')">
+      <span style="color:var(--accent);font-family:'JetBrains Mono',monospace;font-size:12px">20</span>
+      &nbsp;string.h Library — Sab Functions
+      <span class="lt-icon">▾</span>
+    </div>
+    <div class="lesson-content">
+<pre><span class="lang">C</span><span class="pp">#include</span> <span class="str">&lt;string.h&gt;</span>
+<span class="pp">#include</span> <span class="str">&lt;ctype.h&gt;</span>
+
+<span class="kw2">char</span> s1[<span class="nm">50</span>] = <span class="str">"Hello"</span>;
+<span class="kw2">char</span> s2[<span class="nm">50</span>] = <span class="str">"World"</span>;
+
+<span class="fn">strlen</span>(s1);              <span class="cm">// 5 — length</span>
+<span class="fn">strcpy</span>(s1, s2);         <span class="cm">// s1 = "World" — copy</span>
+<span class="fn">strncpy</span>(s1, s2, <span class="nm">3</span>);    <span class="cm">// sirf 3 chars copy (safe)</span>
+<span class="fn">strcat</span>(s1, s2);         <span class="cm">// s1 = "HelloWorld" — join</span>
+<span class="fn">strncat</span>(s1, s2, <span class="nm">3</span>);    <span class="cm">// sirf 3 chars join</span>
+<span class="fn">strcmp</span>(s1, s2);         <span class="cm">// 0=equal, &lt;0=s1&lt;s2, &gt;0=s1&gt;s2</span>
+<span class="fn">strcmpi</span>(s1, s2);        <span class="cm">// case-insensitive compare</span>
+<span class="fn">strstr</span>(s1, <span class="str">"ell"</span>);      <span class="cm">// substring dhundo — pointer ya NULL</span>
+<span class="fn">strchr</span>(s1, <span class="str">'e'</span>);        <span class="cm">// character dhundo</span>
+<span class="fn">strrev</span>(s1);             <span class="cm">// reverse (non-standard)</span>
+<span class="fn">strupr</span>(s1);             <span class="cm">// UPPERCASE</span>
+<span class="fn">strlwr</span>(s1);             <span class="cm">// lowercase</span>
+
+<span class="cm">/* ctype.h functions */</span>
+<span class="fn">toupper</span>(<span class="str">'a'</span>);   <span class="cm">// 'A'</span>
+<span class="fn">tolower</span>(<span class="str">'A'</span>);   <span class="cm">// 'a'</span>
+<span class="fn">isalpha</span>(<span class="str">'a'</span>);   <span class="cm">// 1 — is letter?</span>
+<span class="fn">isdigit</span>(<span class="str">'5'</span>);   <span class="cm">// 1 — is digit?</span>
+<span class="fn">isspace</span>(<span class="str">' '</span>);   <span class="cm">// 1 — is whitespace?</span>
+
+<span class="cm">/* sscanf — string se parse karna */</span>
+<span class="kw2">char</span> data[] = <span class="str">"John 25 8.5"</span>;
+<span class="kw2">char</span> nm[<span class="nm">20</span>]; <span class="kw2">int</span> age; <span class="kw2">float</span> gpa;
+<span class="fn">sscanf</span>(data, <span class="str">"%s %d %f"</span>, nm, &amp;age, &amp;gpa);</pre>
+      <button class="mark-done" onclick="markDone(this,'l20')">✓ Mark as Done</button>
+    </div>
+  </div>
+</div>
+
+<!-- ====== CHAPTER 8 ====== -->
+<div class="chapter" id="ch8">
+  <div class="chapter-header">
+    <span class="chapter-num">CHAPTER 08</span>
+    <h2>Pointers — C Ka Superpower</h2>
+  </div>
+
+  <a class="section-anchor" id="ch8-ptr"></a>
+  <div class="lesson" id="l21">
+    <div class="lesson-title" onclick="toggleLesson('l21')">
+      <span style="color:var(--accent);font-family:'JetBrains Mono',monospace;font-size:12px">21</span>
+      &nbsp;Pointers — Memory Addresses
+      <span class="lt-icon">▾</span>
+    </div>
+    <div class="lesson-content">
+      <div class="concept">
+        <h3>Pointer Kya Hai?</h3>
+        <p>Pointer ek variable hai jo kisi doosre variable ka <strong style="color:var(--accent)">memory address</strong> store karta hai. Jaise ghar ka address — directly ghar pe nahi jaate, pehle address lete hain, phir jaate hain.</p>
+      </div>
+<pre><span class="lang">C</span><span class="kw2">int</span> x = <span class="nm">10</span>;
+<span class="kw2">int</span> *ptr;        <span class="cm">// pointer declare — * matlab "pointer to int"</span>
+ptr = &amp;x;        <span class="cm">// &x = x ka memory address</span>
+
+<span class="fn">printf</span>(<span class="str">"x ka value: %d\n"</span>, x);     <span class="cm">// 10</span>
+<span class="fn">printf</span>(<span class="str">"x ka address: %p\n"</span>, &amp;x);  <span class="cm">// 0x7ffd... (memory address)</span>
+<span class="fn">printf</span>(<span class="str">"ptr mein hai: %p\n"</span>, ptr); <span class="cm">// same address</span>
+<span class="fn">printf</span>(<span class="str">"*ptr = %d\n"</span>, *ptr);        <span class="cm">// 10 — dereferencing</span>
+
+<span class="cm">/* Value change karo pointer se */</span>
+*ptr = <span class="nm">50</span>;
+<span class="fn">printf</span>(<span class="str">"x ab = %d\n"</span>, x);  <span class="cm">// 50! (x change ho gaya)</span>
+
+<span class="cm">/* NULL pointer — safe initialization */</span>
+<span class="kw2">int</span> *nullPtr = <span class="kw">NULL</span>;  <span class="cm">// kahi bhi point nahi karta</span>
+<span class="kw">if</span> (nullPtr != <span class="kw">NULL</span>) {
+    <span class="cm">// Tabhi use karo</span>
+}</pre>
+      <div class="danger"><strong>⚠️ Dangling Pointer!</strong>Freed memory ko point karne wala pointer "dangling pointer" hai. Use karne se undefined behavior aata hai. Hamesha free ke baad ptr = NULL karo.</div>
+      <button class="mark-done" onclick="markDone(this,'l21')">✓ Mark as Done</button>
+    </div>
+  </div>
+
+  <a class="section-anchor" id="ch8-ptr-arr"></a>
+  <div class="lesson" id="l22">
+    <div class="lesson-title" onclick="toggleLesson('l22')">
+      <span style="color:var(--accent);font-family:'JetBrains Mono',monospace;font-size:12px">22</span>
+      &nbsp;Pointers & Arrays — Arithmetic
+      <span class="lt-icon">▾</span>
+    </div>
+    <div class="lesson-content">
+<pre><span class="lang">C</span><span class="kw2">int</span> arr[] = {<span class="nm">10</span>, <span class="nm">20</span>, <span class="nm">30</span>, <span class="nm">40</span>, <span class="nm">50</span>};
+<span class="kw2">int</span> *ptr = arr;  <span class="cm">// arr = &arr[0] — pehle element ka address</span>
+
+<span class="cm">/* Pointer arithmetic */</span>
+<span class="fn">printf</span>(<span class="str">"%d\n"</span>, *ptr);       <span class="cm">// 10</span>
+<span class="fn">printf</span>(<span class="str">"%d\n"</span>, *(ptr+<span class="nm">1</span>));  <span class="cm">// 20 — agla element</span>
+<span class="fn">printf</span>(<span class="str">"%d\n"</span>, *(ptr+<span class="nm">2</span>));  <span class="cm">// 30</span>
+
+ptr++;  <span class="cm">// ptr ab arr[1] pe hai</span>
+<span class="fn">printf</span>(<span class="str">"%d\n"</span>, *ptr);       <span class="cm">// 20</span>
+
+<span class="cm">/* Array loop with pointer */</span>
+<span class="kw2">int</span> *p = arr;
+<span class="kw">for</span>(<span class="kw2">int</span> i=<span class="nm">0</span>; i&lt;<span class="nm">5</span>; i++) {
+    <span class="fn">printf</span>(<span class="str">"%d "</span>, *(p+i));
+    <span class="cm">/* same as arr[i] */</span>
+}
+
+<span class="cm">/* arr[i] == *(arr+i) — dono same hain! */</span>
+<span class="fn">printf</span>(<span class="str">"%d\n"</span>, arr[<span class="nm">2</span>]);     <span class="cm">// 30</span>
+<span class="fn">printf</span>(<span class="str">"%d\n"</span>, *(arr+<span class="nm">2</span>));  <span class="cm">// 30 — same!</span></pre>
+      <button class="mark-done" onclick="markDone(this,'l22')">✓ Mark as Done</button>
+    </div>
+  </div>
+
+  <a class="section-anchor" id="ch8-ptr-fn"></a>
+  <div class="lesson" id="l23">
+    <div class="lesson-title" onclick="toggleLesson('l23')">
+      <span style="color:var(--accent);font-family:'JetBrains Mono',monospace;font-size:12px">23</span>
+      &nbsp;Pointers in Functions — Call by Reference
+      <span class="lt-icon">▾</span>
+    </div>
+    <div class="lesson-content">
+<pre><span class="lang">C</span><span class="cm">/* Call by Value — copy jaati hai, original nahi badle */</span>
+<span class="kw2">void</span> <span class="fn">addFive_val</span>(<span class="kw2">int</span> x) {
+    x += <span class="nm">5</span>;  <span class="cm">// local copy change hoti hai</span>
+}
+
+<span class="cm">/* Call by Reference — address jaata hai, original badle */</span>
+<span class="kw2">void</span> <span class="fn">addFive_ref</span>(<span class="kw2">int</span> *x) {
+    *x += <span class="nm">5</span>;  <span class="cm">// original variable change hota hai</span>
+}
+
+<span class="kw2">void</span> <span class="fn">swap</span>(<span class="kw2">int</span> *a, <span class="kw2">int</span> *b) {
+    <span class="kw2">int</span> temp = *a;
+    *a = *b;
+    *b = temp;
+}
+
+<span class="kw2">int</span> <span class="fn">main</span>() {
+    <span class="kw2">int</span> num = <span class="nm">10</span>;
+    <span class="fn">addFive_val</span>(num);     <span class="cm">// num still 10</span>
+    <span class="fn">addFive_ref</span>(&amp;num);   <span class="cm">// num = 15 ✅</span>
+    
+    <span class="kw2">int</span> x = <span class="nm">5</span>, y = <span class="nm">10</span>;
+    <span class="fn">swap</span>(&amp;x, &amp;y);
+    <span class="fn">printf</span>(<span class="str">"%d %d\n"</span>, x, y);  <span class="cm">// 10 5</span>
+    <span class="kw">return</span> <span class="nm">0</span>;
+}</pre>
+      <button class="mark-done" onclick="markDone(this,'l23')">✓ Mark as Done</button>
+    </div>
+  </div>
+
+  <a class="section-anchor" id="ch8-dbl"></a>
+  <div class="lesson" id="l24">
+    <div class="lesson-title" onclick="toggleLesson('l24')">
+      <span style="color:var(--accent);font-family:'JetBrains Mono',monospace;font-size:12px">24</span>
+      &nbsp;Double Pointers & Pointer to Functions
+      <span class="lt-icon">▾</span>
+    </div>
+    <div class="lesson-content">
+<pre><span class="lang">C</span><span class="cm">/* Double Pointer — pointer ka pointer */</span>
+<span class="kw2">int</span> x = <span class="nm">10</span>;
+<span class="kw2">int</span> *ptr = &amp;x;
+<span class="kw2">int</span> **dptr = &amp;ptr;  <span class="cm">// pointer to pointer</span>
+
+<span class="fn">printf</span>(<span class="str">"%d\n"</span>, x);      <span class="cm">// 10</span>
+<span class="fn">printf</span>(<span class="str">"%d\n"</span>, *ptr);   <span class="cm">// 10</span>
+<span class="fn">printf</span>(<span class="str">"%d\n"</span>, **dptr); <span class="cm">// 10</span>
+
+<span class="cm">/* Pointer to Function */</span>
+<span class="kw2">int</span> <span class="fn">add</span>(<span class="kw2">int</span> a, <span class="kw2">int</span> b) { <span class="kw">return</span> a+b; }
+<span class="kw2">int</span> <span class="fn">mul</span>(<span class="kw2">int</span> a, <span class="kw2">int</span> b) { <span class="kw">return</span> a*b; }
+
+<span class="kw2">int</span> (*fptr)(<span class="kw2">int</span>, <span class="kw2">int</span>);  <span class="cm">// Function pointer declare</span>
+fptr = &amp;<span class="fn">add</span>;
+<span class="fn">printf</span>(<span class="str">"%d\n"</span>, <span class="fn">fptr</span>(<span class="nm">3</span>, <span class="nm">4</span>));  <span class="cm">// 7</span>
+fptr = &amp;<span class="fn">mul</span>;
+<span class="fn">printf</span>(<span class="str">"%d\n"</span>, <span class="fn">fptr</span>(<span class="nm">3</span>, <span class="nm">4</span>));  <span class="cm">// 12</span></pre>
+      <button class="mark-done" onclick="markDone(this,'l24')">✓ Mark as Done</button>
+    </div>
+  </div>
+</div>
+
+<!-- ====== CHAPTER 9 ====== -->
+<div class="chapter" id="ch9">
+  <div class="chapter-header">
+    <span class="chapter-num">CHAPTER 09</span>
+    <h2>Structures, Unions & Enums</h2>
+  </div>
+
+  <a class="section-anchor" id="ch9-struct"></a>
+  <div class="lesson" id="l25">
+    <div class="lesson-title" onclick="toggleLesson('l25')">
+      <span style="color:var(--accent);font-family:'JetBrains Mono',monospace;font-size:12px">25</span>
+      &nbsp;Structures — Custom Data Types
+      <span class="lt-icon">▾</span>
+    </div>
+    <div class="lesson-content">
+<pre><span class="lang">C</span><span class="pp">#include</span> <span class="str">&lt;stdio.h&gt;</span>
+<span class="pp">#include</span> <span class="str">&lt;string.h&gt;</span>
+
+<span class="cm">/* Struct define karo */</span>
+<span class="kw">struct</span> Student {
+    <span class="kw2">char</span> name[<span class="nm">50</span>];
+    <span class="kw2">int</span> rollNo;
+    <span class="kw2">float</span> marks;
+    <span class="kw2">char</span> grade;
+};
+
+<span class="cm">/* typedef se aur easy */</span>
+<span class="kw">typedef struct</span> {
+    <span class="kw2">char</span> title[<span class="nm">100</span>];
+    <span class="kw2">char</span> author[<span class="nm">50</span>];
+    <span class="kw2">int</span> year;
+    <span class="kw2">float</span> price;
+} Book;
+
+<span class="kw2">int</span> <span class="fn">main</span>() {
+    <span class="cm">/* struct variable */</span>
+    <span class="kw">struct</span> Student s1;
+    <span class="fn">strcpy</span>(s1.name, <span class="str">"Rahul"</span>);
+    s1.rollNo = <span class="nm">101</span>;
+    s1.marks = <span class="nm">87.5</span>;
+    s1.grade = <span class="str">'A'</span>;
+
+    <span class="cm">/* Direct initialize */</span>
+    <span class="kw">struct</span> Student s2 = {<span class="str">"Priya"</span>, <span class="nm">102</span>, <span class="nm">92.0</span>, <span class="str">'A'</span>};
+
+    <span class="cm">/* typedef struct */</span>
+    Book b1 = {<span class="str">"C Programming"</span>, <span class="str">"Dennis Ritchie"</span>, <span class="nm">1978</span>, <span class="nm">599.0</span>};
+
+    <span class="cm">/* Struct pointer with -> operator */</span>
+    <span class="kw">struct</span> Student *sptr = &amp;s1;
+    <span class="fn">printf</span>(<span class="str">"Name: %s\n"</span>, sptr-&gt;name);    <span class="cm">// -> operator</span>
+    <span class="fn">printf</span>(<span class="str">"Marks: %.1f\n"</span>, sptr-&gt;marks);
+
+    <span class="cm">/* Array of structs */</span>
+    <span class="kw">struct</span> Student class[<span class="nm">3</span>] = {
+        {<span class="str">"Amit"</span>, <span class="nm">1</span>, <span class="nm">85</span>, <span class="str">'A'</span>},
+        {<span class="str">"Sita"</span>, <span class="nm">2</span>, <span class="nm">91</span>, <span class="str">'A'</span>},
+        {<span class="str">"Ram"</span>,  <span class="nm">3</span>, <span class="nm">72</span>, <span class="str">'B'</span>}
+    };
+    <span class="kw">return</span> <span class="nm">0</span>;
+}</pre>
+      <div class="tip"><strong>💡 . vs -></strong>Struct variable ke saath . (dot) use karo. Struct pointer ke saath -> (arrow) use karo.</div>
+      <button class="mark-done" onclick="markDone(this,'l25')">✓ Mark as Done</button>
+    </div>
+  </div>
+
+  <a class="section-anchor" id="ch9-union"></a>
+  <div class="lesson" id="l26">
+    <div class="lesson-title" onclick="toggleLesson('l26')">
+      <span style="color:var(--accent);font-family:'JetBrains Mono',monospace;font-size:12px">26</span>
+      &nbsp;Union & Enum
+      <span class="lt-icon">▾</span>
+    </div>
+    <div class="lesson-content">
+<pre><span class="lang">C — Union</span><span class="cm">/* Union = sab members SAME memory share karte hain */</span>
+<span class="cm">/* Ek waqt mein sirf ek member use hoga */</span>
+<span class="kw">union</span> Data {
+    <span class="kw2">int</span> i;      <span class="cm">// 4 bytes</span>
+    <span class="kw2">float</span> f;    <span class="cm">// 4 bytes</span>
+    <span class="kw2">char</span> str[<span class="nm">20</span>]; <span class="cm">// 20 bytes</span>
+};
+<span class="cm">/* Total size = 20 bytes (sabse bada member) */</span>
+
+<span class="kw">union</span> Data d;
+d.i = <span class="nm">10</span>;
+<span class="fn">printf</span>(<span class="str">"%d\n"</span>, d.i);     <span class="cm">// 10</span>
+d.f = <span class="nm">3.14</span>;              <span class="cm">// ab d.i overwritten!</span>
+<span class="fn">printf</span>(<span class="str">"%f\n"</span>, d.f);     <span class="cm">// 3.14</span></pre>
+<pre><span class="lang">C — Enum</span><span class="cm">/* Enum = named integer constants */</span>
+<span class="kw">enum</span> Day {MON, TUE, WED, THU, FRI, SAT, SUN};
+<span class="cm">/* MON=0, TUE=1, WED=2, ... */</span>
+
+<span class="kw">enum</span> Status {PENDING=<span class="nm">1</span>, ACTIVE=<span class="nm">2</span>, CLOSED=<span class="nm">3</span>};
+
+<span class="kw">enum</span> Day today = WED;
+<span class="fn">printf</span>(<span class="str">"%d\n"</span>, today);   <span class="cm">// 2</span>
+
+<span class="kw">if</span>(today == WED) <span class="fn">printf</span>(<span class="str">"Wednesday!\n"</span>);</pre>
+      <button class="mark-done" onclick="markDone(this,'l26')">✓ Mark as Done</button>
+    </div>
+  </div>
+</div>
+
+<!-- ====== CHAPTER 10 ====== -->
+<div class="chapter" id="ch10">
+  <div class="chapter-header">
+    <span class="chapter-num">CHAPTER 10</span>
+    <h2>Dynamic Memory Management</h2>
+  </div>
+
+  <a class="section-anchor" id="ch10-mem"></a>
+  <div class="lesson" id="l27">
+    <div class="lesson-title" onclick="toggleLesson('l27')">
+      <span style="color:var(--accent);font-family:'JetBrains Mono',monospace;font-size:12px">27</span>
+      &nbsp;malloc, calloc, realloc, free
+      <span class="lt-icon">▾</span>
+    </div>
+    <div class="lesson-content">
+<pre><span class="lang">C</span><span class="pp">#include</span> <span class="str">&lt;stdio.h&gt;</span>
+<span class="pp">#include</span> <span class="str">&lt;stdlib.h&gt;</span>
+
+<span class="kw2">int</span> n = <span class="nm">5</span>;
+
+<span class="cm">/* malloc — uninitialized memory allocate karo */</span>
+<span class="kw2">int</span> *arr = (<span class="kw2">int</span>*) <span class="fn">malloc</span>(n * <span class="kw">sizeof</span>(<span class="kw2">int</span>));
+<span class="kw">if</span> (arr == <span class="kw">NULL</span>) { <span class="fn">printf</span>(<span class="str">"Memory fail!\n"</span>); <span class="kw">return</span> <span class="nm">1</span>; }
+
+<span class="cm">/* calloc — zero-initialized memory */</span>
+<span class="kw2">int</span> *brr = (<span class="kw2">int</span>*) <span class="fn">calloc</span>(n, <span class="kw">sizeof</span>(<span class="kw2">int</span>));
+<span class="cm">/* sab elements 0 se initialized */</span>
+
+<span class="cm">/* Use karo */</span>
+<span class="kw">for</span>(<span class="kw2">int</span> i=<span class="nm">0</span>; i&lt;n; i++) arr[i] = i * <span class="nm">10</span>;
+
+<span class="cm">/* realloc — size badha ya ghata do */</span>
+arr = (<span class="kw2">int</span>*) <span class="fn">realloc</span>(arr, <span class="nm">10</span> * <span class="kw">sizeof</span>(<span class="kw2">int</span>));
+
+<span class="cm">/* ZAROOR — memory free karo */</span>
+<span class="fn">free</span>(arr);
+<span class="fn">free</span>(brr);
+arr = <span class="kw">NULL</span>;  <span class="cm">// dangling pointer se bachao</span>
+brr = <span class="kw">NULL</span>;</pre>
+      <div class="danger"><strong>⚠️ Memory Leak!</strong>malloc/calloc se li hui memory free nahi ki toh "memory leak" hota hai — program dhire dhire saari RAM kha jaata hai. Hamesha free() karo!</div>
+      <button class="mark-done" onclick="markDone(this,'l27')">✓ Mark as Done</button>
+    </div>
+  </div>
+
+  <a class="section-anchor" id="ch10-stack"></a>
+  <div class="lesson" id="l28">
+    <div class="lesson-title" onclick="toggleLesson('l28')">
+      <span style="color:var(--accent);font-family:'JetBrains Mono',monospace;font-size:12px">28</span>
+      &nbsp;Stack vs Heap — Memory Samjho
+      <span class="lt-icon">▾</span>
+    </div>
+    <div class="lesson-content">
+      <div class="tbl-wrap">
+      <table>
+        <tr><th>Property</th><th>Stack</th><th>Heap</th></tr>
+        <tr><td>Allocation</td><td>Automatic (compiler)</td><td>Manual (malloc/free)</td></tr>
+        <tr><td>Size</td><td>Limited (~1-8 MB)</td><td>Large (RAM jitni)</td></tr>
+        <tr><td>Speed</td><td>Very fast</td><td>Slower</td></tr>
+        <tr><td>Lifetime</td><td>Function scope</td><td>Jab tak free karo</td></tr>
+        <tr><td>Use case</td><td>Local variables, function calls</td><td>Dynamic data, large arrays</td></tr>
+        <tr><td>Error</td><td>Stack overflow</td><td>Memory leak, dangling ptr</td></tr>
+      </table>
+      </div>
+<pre><span class="lang">C</span><span class="cm">/* Stack — automatic */</span>
+<span class="kw2">void</span> <span class="fn">func</span>() {
+    <span class="kw2">int</span> arr[<span class="nm">1000</span>];  <span class="cm">// Stack pe — function baad mein khud free hoga</span>
+}
+
+<span class="cm">/* Heap — manual */</span>
+<span class="kw2">int</span>* <span class="fn">createArr</span>(<span class="kw2">int</span> n) {
+    <span class="kw2">int</span>* arr = (<span class="kw2">int</span>*)<span class="fn">malloc</span>(n * <span class="kw">sizeof</span>(<span class="kw2">int</span>));
+    <span class="kw">return</span> arr;  <span class="cm">// Heap pe — caller ko free karna padega</span>
+}</pre>
+      <button class="mark-done" onclick="markDone(this,'l28')">✓ Mark as Done</button>
+    </div>
+  </div>
+</div>
+
+<!-- ====== CHAPTER 11 ====== -->
+<div class="chapter" id="ch11">
+  <div class="chapter-header">
+    <span class="chapter-num">CHAPTER 11</span>
+    <h2>File Handling</h2>
+  </div>
+
+  <a class="section-anchor" id="ch11-file"></a>
+  <div class="lesson" id="l29">
+    <div class="lesson-title" onclick="toggleLesson('l29')">
+      <span style="color:var(--accent);font-family:'JetBrains Mono',monospace;font-size:12px">29</span>
+      &nbsp;File I/O — Read, Write, Append
+      <span class="lt-icon">▾</span>
+    </div>
+    <div class="lesson-content">
+<pre><span class="lang">C — File Write</span><span class="pp">#include</span> <span class="str">&lt;stdio.h&gt;</span>
+
+<span class="kw2">int</span> <span class="fn">main</span>() {
+    FILE *fp;  <span class="cm">// File pointer</span>
+    
+    <span class="cm">/* File kholna — modes: "r"=read, "w"=write, "a"=append */</span>
+    fp = <span class="fn">fopen</span>(<span class="str">"data.txt"</span>, <span class="str">"w"</span>);
+    <span class="kw">if</span> (fp == <span class="kw">NULL</span>) {
+        <span class="fn">printf</span>(<span class="str">"File open nahi hua!\n"</span>);
+        <span class="kw">return</span> <span class="nm">1</span>;
+    }
+    
+    <span class="cm">/* Write karna */</span>
+    <span class="fn">fprintf</span>(fp, <span class="str">"Hello File!\n"</span>);
+    <span class="fn">fprintf</span>(fp, <span class="str">"Name: Rahul, Age: %d\n"</span>, <span class="nm">20</span>);
+    <span class="fn">fputs</span>(<span class="str">"Ek aur line\n"</span>, fp);
+    
+    <span class="fn">fclose</span>(fp);  <span class="cm">// ZAROOR close karo!</span>
+    <span class="kw">return</span> <span class="nm">0</span>;
+}</pre>
+<pre><span class="lang">C — File Read</span>fp = <span class="fn">fopen</span>(<span class="str">"data.txt"</span>, <span class="str">"r"</span>);
+<span class="kw2">char</span> line[<span class="nm">100</span>];
+
+<span class="cm">/* Line by line read */</span>
+<span class="kw">while</span> (<span class="fn">fgets</span>(line, <span class="nm">100</span>, fp) != <span class="kw">NULL</span>) {
+    <span class="fn">printf</span>(<span class="str">"%s"</span>, line);
+}
+
+<span class="cm">/* Character by character */</span>
+<span class="kw2">char</span> ch;
+<span class="kw">while</span> ((ch = <span class="fn">fgetc</span>(fp)) != <span class="nm">EOF</span>) {
+    <span class="fn">putchar</span>(ch);
+}
+
+<span class="cm">/* Formatted read */</span>
+<span class="kw2">char</span> name[<span class="nm">50</span>]; <span class="kw2">int</span> age;
+<span class="fn">fscanf</span>(fp, <span class="str">"%s %d"</span>, name, &amp;age);
+
+<span class="fn">fclose</span>(fp);</pre>
+      <div class="tbl-wrap">
+      <table>
+        <tr><th>Mode</th><th>Matlab</th><th>File exist nahi toh?</th></tr>
+        <tr><td>"r"</td><td>Read only</td><td>Error (NULL)</td></tr>
+        <tr><td>"w"</td><td>Write (overwrite)</td><td>New file create</td></tr>
+        <tr><td>"a"</td><td>Append (end mein add)</td><td>New file create</td></tr>
+        <tr><td>"r+"</td><td>Read + Write</td><td>Error (NULL)</td></tr>
+        <tr><td>"w+"</td><td>Read + Write (overwrite)</td><td>New file create</td></tr>
+        <tr><td>"rb"</td><td>Binary read</td><td>Error (NULL)</td></tr>
+        <tr><td>"wb"</td><td>Binary write</td><td>New file create</td></tr>
+      </table>
+      </div>
+      <button class="mark-done" onclick="markDone(this,'l29')">✓ Mark as Done</button>
+    </div>
+  </div>
+</div>
+
+<!-- ====== CHAPTER 12 ====== -->
+<div class="chapter" id="ch12">
+  <div class="chapter-header">
+    <span class="chapter-num">CHAPTER 12</span>
+    <h2>Advanced Topics</h2>
+  </div>
+
+  <a class="section-anchor" id="ch12-pre"></a>
+  <div class="lesson" id="l30">
+    <div class="lesson-title" onclick="toggleLesson('l30')">
+      <span style="color:var(--accent);font-family:'JetBrains Mono',monospace;font-size:12px">30</span>
+      &nbsp;Preprocessor Directives
+      <span class="lt-icon">▾</span>
+    </div>
+    <div class="lesson-content">
+<pre><span class="lang">C</span><span class="cm">/* #define — constants aur macros */</span>
+<span class="pp">#define</span> PI 3.14159
+<span class="pp">#define</span> MAX(a,b) ((a)>(b)?(a):(b))  <span class="cm">// Macro function</span>
+<span class="pp">#define</span> SQUARE(x) ((x)*(x))
+<span class="pp">#define</span> GREETING "Namaste!"
+
+<span class="cm">/* Conditional compilation */</span>
+<span class="pp">#define</span> DEBUG 1
+
+<span class="pp">#ifdef</span> DEBUG
+    <span class="fn">printf</span>(<span class="str">"Debug: x = %d\n"</span>, x);
+<span class="pp">#endif</span>
+
+<span class="pp">#ifndef</span> MAX_SIZE
+    <span class="pp">#define</span> MAX_SIZE 100
+<span class="pp">#endif</span>
+
+<span class="cm">/* Include guard — double include se bachao */</span>
+<span class="pp">#ifndef</span> MYHEADER_H
+<span class="pp">#define</span> MYHEADER_H
+
+<span class="cm">/* Header content yahan */</span>
+
+<span class="pp">#endif</span>
+
+<span class="cm">/* Predefined macros */</span>
+<span class="fn">printf</span>(<span class="str">"File: %s\n"</span>, __FILE__);
+<span class="fn">printf</span>(<span class="str">"Line: %d\n"</span>, __LINE__);
+<span class="fn">printf</span>(<span class="str">"Date: %s\n"</span>, __DATE__);</pre>
+      <button class="mark-done" onclick="markDone(this,'l30')">✓ Mark as Done</button>
+    </div>
+  </div>
+
+  <a class="section-anchor" id="ch12-typedef"></a>
+  <div class="lesson" id="l31">
+    <div class="lesson-title" onclick="toggleLesson('l31')">
+      <span style="color:var(--accent);font-family:'JetBrains Mono',monospace;font-size:12px">31</span>
+      &nbsp;typedef, Bit Fields & Linked List Preview
+      <span class="lt-icon">▾</span>
+    </div>
+    <div class="lesson-content">
+<pre><span class="lang">C — typedef</span><span class="cm">/* typedef — existing type ko naya naam do */</span>
+<span class="kw">typedef</span> <span class="kw2">unsigned int</span> uint;
+<span class="kw">typedef</span> <span class="kw2">long long int</span> ll;
+<span class="kw">typedef</span> <span class="kw2">char</span>* String;
+
+uint age = <span class="nm">20</span>;   <span class="cm">// same as unsigned int age</span>
+ll bigNum = <span class="nm">9000000000LL</span>;
+String name = <span class="str">"Rahul"</span>;</pre>
+<pre><span class="lang">C — Bit Fields</span><span class="cm">/* Bit Fields — exact bits specify karo */</span>
+<span class="kw">struct</span> Flags {
+    <span class="kw2">unsigned int</span> isAdmin  : <span class="nm">1</span>;  <span class="cm">// sirf 1 bit</span>
+    <span class="kw2">unsigned int</span> isActive : <span class="nm">1</span>;
+    <span class="kw2">unsigned int</span> level    : <span class="nm">4</span>;  <span class="cm">// 4 bits = 0-15 values</span>
+};
+<span class="cm">/* Total: 6 bits ki jagah 3 fields — memory efficient! */</span></pre>
+<pre><span class="lang">C — Linked List (Basic)</span><span class="cm">/* Node structure */</span>
+<span class="kw">struct</span> Node {
+    <span class="kw2">int</span> data;
+    <span class="kw">struct</span> Node* next;  <span class="cm">// apne jaise ka pointer</span>
+};
+
+<span class="cm">/* Node create karna */</span>
+<span class="kw">struct</span> Node* <span class="fn">createNode</span>(<span class="kw2">int</span> val) {
+    <span class="kw">struct</span> Node* newNode = (<span class="kw">struct</span> Node*)<span class="fn">malloc</span>(<span class="kw">sizeof</span>(<span class="kw">struct</span> Node));
+    newNode-&gt;data = val;
+    newNode-&gt;next = <span class="kw">NULL</span>;
+    <span class="kw">return</span> newNode;
+}
+
+<span class="cm">/* Traverse linked list */</span>
+<span class="kw">void</span> <span class="fn">printList</span>(<span class="kw">struct</span> Node* head) {
+    <span class="kw">struct</span> Node* curr = head;
+    <span class="kw">while</span>(curr != <span class="kw">NULL</span>) {
+        <span class="fn">printf</span>(<span class="str">"%d -> "</span>, curr-&gt;data);
+        curr = curr-&gt;next;
+    }
+    <span class="fn">printf</span>(<span class="str">"NULL\n"</span>);
+}</pre>
+      <div class="tip"><strong>🎉 Congratulations!</strong>Tum ne C Language ka complete course kar liya! Ab practice karo — LeetCode ke easy problems C mein solve karo, ya apna project banao!</div>
+      <button class="mark-done" onclick="markDone(this,'l31')">✓ Mark as Done</button>
+    </div>
+  </div>
+</div>
+
+</div><!-- end content -->
+</main>
+
+<script>
+const TOTAL = 31;
+let done = JSON.parse(localStorage.getItem('c_done') || '{}');
+
+function toggleLesson(id) {
+  const lesson = document.getElementById(id);
+  const title = lesson.querySelector('.lesson-title');
+  const content = lesson.querySelector('.lesson-content');
+  const isOpen = title.classList.contains('open');
+  title.classList.toggle('open', !isOpen);
+  content.classList.toggle('show', !isOpen);
+}
+
+function markDone(btn, id) {
+  done[id] = !done[id];
+  localStorage.setItem('c_done', JSON.stringify(done));
+  btn.classList.toggle('done', done[id]);
+  btn.textContent = done[id] ? '✓ Completed!' : '✓ Mark as Done';
+  updateProgress();
+  updateSidebar();
+}
+
+function updateProgress() {
+  const count = Object.values(done).filter(Boolean).length;
+  const pct = Math.round((count / TOTAL) * 100);
+  document.getElementById('prog-bar').style.width = pct + '%';
+  document.getElementById('prog-text').textContent = pct + '% complete';
+}
+
+function updateSidebar() {
+  const items = document.querySelectorAll('.sidebar-item');
+  const lessonMap = ['l1','l2','l3','l4','l5','l6','l7','l8','l9','l10','l11','l12','l13','l14','l15','l16','l17','l18','l19','l20','l21','l22','l23','l24','l25','l26','l27','l28','l29','l30','l31'];
+  items.forEach((item, idx) => {
+    if(idx === 0) return;
+    const lid = lessonMap[idx-1];
+    if(lid && done[lid]) item.classList.add('done');
+    else item.classList.remove('done');
+  });
+}
+
+function jumpTo(id) {
+  const el = document.getElementById(id);
+  if(el) el.scrollIntoView({behavior:'smooth'});
+  if(window.innerWidth <= 768) toggleSidebar();
+}
+
+function toggleSidebar() {
+  document.getElementById('sidebar').classList.toggle('open');
+  document.getElementById('overlay').classList.toggle('show');
+}
+
+// Restore state
+window.onload = () => {
+  Object.keys(done).forEach(id => {
+    if(done[id]) {
+      const lesson = document.getElementById(id);
+      if(lesson) {
+        const btn = lesson.querySelector('.mark-done');
+        if(btn) { btn.classList.add('done'); btn.textContent = '✓ Completed!'; }
+      }
+    }
+  });
+  updateProgress();
+  updateSidebar();
+};
+</script>
+</body>
+</html>
